@@ -4,7 +4,7 @@ public class Administrator extends User{
     //..
 
     //constructor
-    public Administrator (String username, int cedula){
+    public Administrator (String username, long cedula){
         super(username, cedula);
     }
 
