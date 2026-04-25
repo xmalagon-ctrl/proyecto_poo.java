@@ -36,6 +36,10 @@ public class Reservar {
     public void realizarReserva() {
         if (bicicletaReservada.reservar()) {
             estadoReserva = "reservada";
+
+            estacionRecogida.devolverBicicleta(bicicletaReservada);
+            estudiante.asignarBicicleta(bicicletaReservada);
+
             System.out.println("Reserva realizada con éxito.");
         } else {
             estadoReserva = "fallida";
@@ -47,6 +51,10 @@ public class Reservar {
         if (estadoReserva.equals("reservada")) {
             bicicletaReservada.disponible();
             estadoReserva = "finalizada";
+
+            estacionEntrega.asignarBicicleta(bicicletaReservada);
+            estudiante.devolverBicicleta(bicicletaReservada);
+
             System.out.println("Reserva finalizada. Gracias por usar nuestro servicio.");
         } else {
             System.out.println("No hay una reserva activa para finalizar.");
@@ -59,6 +67,10 @@ public class Reservar {
         if (estadoReserva.equals("reservada")) {
             bicicletaReservada.disponible();
             estadoReserva = "cancelada";
+
+            estacionRecogida.asignarBicicleta(bicicletaReservada);
+            eswtudiante.devolverBicicleta(bicicletaReservada);
+
             System.out.println("Reserva cancelada.");
         } else {
             System.out.println("No hay una reserva activa para cancelar.");
