@@ -1,22 +1,20 @@
  //clase hija  de madre para estudiante
 public class Student extends User {
     //Atributos
-    private int tiun; //codigo del carnet
+    private long tiun; //codigo del carnet
     private String state = "activo";
     public boolean TieneReserva = false; 
     public Bike bicicletaAsignada = null;
 
-
-
     //Constructor
-    public Student (String username, int cedula, int tiun){
+    public Student (String username, long cedula, long tiun){
         super(username, cedula);
         this.tiun = tiun;
     }
 
     //Get
 
-    public int getTiun(){
+    public long getTiun(){
         return tiun;
     }
 
@@ -25,24 +23,11 @@ public class Student extends User {
     }
 
 
-
-    public void asignarBicicleta(Bike bicicleta){
-        this.bicicletaAsignada = bicicleta; //cuando haya ids se les asigna == se debe completar
-        this.TieneReserva = true;
-    }
-
-    public void devolverBicicleta(Bike bicicleta){
-        this.bicicletaAsignada = null;
-        this.TieneReserva = false;
-        }
-
-
-
         //Set
 
     //verificacion de tiun
-    public boolean setTiun(int tiun){
-        String tiunS = Integer.toString(tiun);
+    public boolean setTiun(long tiun){
+        String tiunS = String.valueOf(tiun);
         if (tiunS.length() == 10 ){  
             this.tiun = tiun;
             return true;
@@ -67,7 +52,17 @@ public class Student extends User {
         }
     }
 
+ //METODOS
+  public void asignarBicicleta(Bike bicicleta){
+        this.bicicletaAsignada = bicicleta; //cuando haya ids se les asigna == se debe completar
+        this.TieneReserva = true;
+    }
+
+    public void devolverBicicleta(Bike bicicleta){
+        this.bicicletaAsignada = null;
+        this.TieneReserva = false;
+        }
+
 }
 
     
-}
