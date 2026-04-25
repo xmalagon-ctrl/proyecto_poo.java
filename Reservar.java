@@ -36,12 +36,36 @@ public class Reservar {
     public void realizarReserva() {
         if (bicicletaReservada.reservar()) {
             estadoReserva = "reservada";
-            System.out.println("Reserva realizada con éxito para el estudiante: " + estudiante.getUsername());
+            System.out.println("Reserva realizada con éxito.");
         } else {
             estadoReserva = "fallida";
-            System.out.println("No se pudo realizar la reserva para el estudiante: " + estudiante.getUsername());
+            System.out.println("No se pudo realizar la reserva ");
         }
     }
+
+    public void finalizarReserva() {
+        if (estadoReserva.equals("reservada")) {
+            bicicletaReservada.disponible();
+            estadoReserva = "finalizada";
+            System.out.println("Reserva finalizada. Gracias por usar nuestro servicio.");
+        } else {
+            System.out.println("No hay una reserva activa para finalizar.");
+        }
+    }
+
+
+
+    public void cancelarReserva() {
+        if (estadoReserva.equals("reservada")) {
+            bicicletaReservada.disponible();
+            estadoReserva = "cancelada";
+            System.out.println("Reserva cancelada.");
+        } else {
+            System.out.println("No hay una reserva activa para cancelar.");
+        }
+    }
+
+
 
     public void setEstadoReserva(String estadoReserva) {
         this.estadoReserva = estadoReserva;
