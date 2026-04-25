@@ -26,7 +26,7 @@ public class Main {
                 tiun = verifExcepcion(sc, "Ingresa el Tiun de su carnet: ");
                 
                 //Clase user
-                usuario = new User(nombre_u, tiun);
+                usuario = new Student(nombre_u, tiun, tiun);
                 sc.nextLine();
                 verif_u = usuario.setUserName(nombre_u);
                 verif_tiun = usuario.setTiun(tiun);
