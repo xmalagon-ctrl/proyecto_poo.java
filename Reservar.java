@@ -1,0 +1,50 @@
+public class Reservar {
+    private Station estacionRecogida;
+    private Station estacionEntrega;
+    private Bike bicicletaReservada;
+    private int tiempoReserva;
+    private String estadoReserva;
+    private Student estudiante;
+
+    public Reservar(Station estacionRecogida, Station estacionEntrega, Bike bicicletaReservada, int tiempoReserva, Student estudiante) {
+        this.estacionRecogida = estacionRecogida;
+        this.estacionEntrega = estacionEntrega;
+        this.bicicletaReservada = bicicletaReservada;
+        this.tiempoReserva = tiempoReserva;
+        this.estudiante = estudiante;
+    }
+
+    public Station getEstacionRecogida() {
+        return estacionRecogida;
+    }
+    public Station getEstacionEntrega() {
+        return estacionEntrega;
+    }
+    public Bike getBicicletaReservada() {
+        return bicicletaReservada;
+    }
+    public int getTiempoReserva() {
+        return tiempoReserva;
+    }  
+    public String getEstadoReserva() {
+        return estadoReserva;
+    }
+    public Student getEstudiante() {
+        return estudiante;
+    }
+
+    public void realizarReserva() {
+        if (bicicletaReservada.reservar()) {
+            estadoReserva = "reservada";
+            System.out.println("Reserva realizada con éxito para el estudiante: " + estudiante.getUsername());
+        } else {
+            estadoReserva = "fallida";
+            System.out.println("No se pudo realizar la reserva para el estudiante: " + estudiante.getUsername());
+        }
+    }
+
+    public void setEstadoReserva(String estadoReserva) {
+        this.estadoReserva = estadoReserva;
+    }
+
+}
