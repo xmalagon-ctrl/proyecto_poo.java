@@ -3,6 +3,10 @@ public class Student extends User {
     //Atributos
     private int tiun; //codigo del carnet
     private String state = "activo";
+    public boolean TieneReserva = false; 
+    public Bike bicicletaAsignada = null;
+
+
 
     //Constructor
     public Student (String username, int cedula, int tiun){
@@ -19,6 +23,20 @@ public class Student extends User {
     public String getState(){
         return state;
     }
+
+
+
+    public void asignarBicicleta(Bike bicicleta){
+        this.bicicletaAsignada = bicicleta; //cuando haya ids se les asigna == se debe completar
+        this.TieneReserva = true;
+    }
+
+    public void devolverBicicleta(Bike bicicleta){
+        this.bicicletaAsignada = null;
+        this.TieneReserva = false;
+        }
+
+
 
         //Set
 
@@ -48,6 +66,8 @@ public class Student extends User {
             return false;
         }
     }
+
+}
 
     
 }
