@@ -69,7 +69,7 @@ public class Reservar {
             estadoReserva = "cancelada";
 
             estacionRecogida.asignarBicicleta(bicicletaReservada);
-            eswtudiante.devolverBicicleta(bicicletaReservada);
+            estudiante.devolverBicicleta(bicicletaReservada);
 
             System.out.println("Reserva cancelada.");
         } else {
