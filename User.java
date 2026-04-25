@@ -32,8 +32,8 @@ public abstract class User {
     }
 
     //verificacion de cedula
-    public boolean setCedula(int cedula){
-        String cedulaS = Integer.toString(cedula);
+    public boolean setCedula(long cedula){
+        String cedulaS = String.valueOf(cedula);
         if (cedulaS.length() <= 10 && cedulaS.length() >= 8 ){  
             this.cedula = cedula;
             return true;
