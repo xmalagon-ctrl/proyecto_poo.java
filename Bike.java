@@ -26,12 +26,12 @@ public class Bike {
 
         if (state.equals("disponible")){
             state = "reservada";
-            System.out.println("Reserva exitosa"+ "id =" + id);
+            
 
             return true;
         }else{
 
-            System.out.println("No se pudo realizar la reserva"+ "id =" + id);
+            
             return false;
         }
     }
