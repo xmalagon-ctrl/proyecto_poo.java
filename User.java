@@ -2,10 +2,10 @@
 public abstract class User {
     //Atributos
     private String username;
-    private int cedula; 
+    private long cedula; 
 
     //Constructor
-    public User (String username, int cedula){
+    public User (String username, long cedula){
         this.username = username;
         this.cedula = cedula;
     }
@@ -14,7 +14,7 @@ public abstract class User {
         return username;
     }
 
-    public int getCedula(){
+    public long getCedula(){
         return cedula;
     }
 
