@@ -37,7 +37,6 @@ public class Reservar {
             this.estacionEntrega = estacionEntrega;
         } else {
             System.out.println("La estación de entrega está llena. ");
-            this.estacionEntrega = estacionRecogida;
         }
     }
 
