@@ -8,4 +8,10 @@ public class Administrator extends User{
         super(username, cedula);
     }
 
+    //metodos
+   // public void penalizeStudent(Student listaEstudiante, ){
+
+  //  }
+   //addBicycle(), viewReports(), removeStudent()*/
+
 }
