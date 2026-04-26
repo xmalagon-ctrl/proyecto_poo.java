@@ -27,10 +27,10 @@ public class main {
         //Estación 6: Calle 30
         estaciones.add(new Station("Calle 30", 40));
 
-        do {
+                do {
             admi_usu = verifExcepcion(sc, "Si es administrativo ingrese 1 y si es estudiante ingrese 2: ");
             sc.nextLine();
-                if(admi_usu == 1){
+            if(admi_usu == 1){
                 do{
                 //Nombre del administrador
                 System.out.print("Ingresa el nombre del administrador: ");
@@ -44,7 +44,7 @@ public class main {
                 sc.nextLine();
                 verif_u = administrador.setUserName(nombre_admi);
                 verif_CC_TI = administrador.setCedula(cedulaAdmi);
-    
+
                 }while(!verif_u || !verif_CC_TI);
 
                 //Agregar administrador a la lista de administrador
@@ -63,40 +63,37 @@ public class main {
                     System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
                     menu = verifExcepcion(sc, "Ingrese el numero de lo que desea hacer: ");
 
-                    switch (menu){
+                    switch(menu){
                         case 1:{
                             System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
                             System.out.println("Penalizar estudiante");
                             System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
-                        break;}
-
-                    case 2:{
-                        System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
-                        System.out.println("Agregar cicla");
-                        System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
-                        System.out.println();
-                    break;
-                    }case 3:{
-                        System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
-                        System.out.println("Reglas");
-                        administrador.seeRules();
-                        sc.nextLine();
-    
-                    }case 4:{
-                        System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
-                        System.out.println("Ver reportes");
-                        System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
-                        System.out.println();
-                    break;
-                    }case 5:{
-                        System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
-                        System.out.println("Quitar a acceso a estudiante");
-                        System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
-                        System.out.println();
-                    break;
-                    }default:{
-                        mensajeError();
-                    }
+                            break;}
+                        case 2:{
+                            System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
+                            System.out.println("Agregar cicla");
+                            System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
+                            System.out.println();
+                            break;}
+                        case 3:{
+                            System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
+                            System.out.println("Reglas");
+                            System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
+                            break;}
+                        case 4:{
+                            System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
+                            System.out.println("Ver reportes");
+                            System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
+                            System.out.println();
+                            break;}
+                        case 5:{    
+                            System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
+                            System.out.println("Quitar a acceso a estudiante");
+                            System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
+                            System.out.println();
+                            break;}
+                        default:  {  
+                            mensajeError();}}
                     do{
                         System.out.print("Desea volver al menu principal? (si/no); ");
                         opcionMenu = sc.nextLine().toLowerCase();
@@ -106,7 +103,7 @@ public class main {
                             mensajeError();
                         }
                     }while(!opcionMenu.equals("no") && !opcionMenu.equals("si"));
-                    
+
 
                 }while (menu > 5 || menu < 0 || opcionMenu.equals("si"));
 
@@ -121,14 +118,14 @@ public class main {
 
                 //Numero tiun
                 tiun = verifExcepcion(sc, "Ingresa el Tiun de su carnet: ");
-                
+
                 //Clase estudiante
                 estudiante = new Student(nombre_st,cedulaEstudiante, tiun);
                 sc.nextLine();
                 verif_u = estudiante.setUserName(nombre_st);
                 verif_CC_TI = estudiante.setCedula(cedulaEstudiante);
                 verif_tiun = estudiante.setTiun(tiun);
-    
+
                 }while(!verif_u || !verif_tiun || !verif_CC_TI);
 
                 //agregar estudiante a la lista de estudiantes
@@ -178,7 +175,7 @@ public class main {
                         System.out.println("Reglas");
                         estudiante.seeRules();
                         sc.nextLine();
-    
+
                     }else if ( menu == 4){
                         System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
                         System.out.println("Tiempo de reservacion");
@@ -203,16 +200,16 @@ public class main {
                             mensajeError();
                         }
                     }while(!opcionMenu.equals("no") && !opcionMenu.equals("si"));
-                    
+
 
                 }while (menu > 5 || menu < 0 || opcionMenu.equals("si"));
-                
+
 
             }else{
                 mensajeError();
             }
         }while(admi_usu < 1 || admi_usu > 2);
-        
+
 
 
         sc.close();
@@ -242,7 +239,7 @@ public class main {
         System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
         System.out.println("Ingrese de nuevo el valor correcto");
         System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
-        
+
     }
 
 }
