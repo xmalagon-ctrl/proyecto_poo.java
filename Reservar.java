@@ -6,8 +6,8 @@ public class Reservar {
     private String estadoReserva;
     private Student estudiante;
 
-    public Reservar(Station estacionRecogida, Bike bicicletaReservada, int tiempoReserva, Student estudiante) {
-        this.estacionRecogida = estacionRecogida;
+    public Reservar(/*Station estacionRecogida,*/ Bike bicicletaReservada, int tiempoReserva, Student estudiante) {
+        //this.estacionRecogida = estacionRecogida;
         this.bicicletaReservada = bicicletaReservada;
         this.tiempoReserva = tiempoReserva;
         this.estudiante = estudiante;
@@ -32,13 +32,24 @@ public class Reservar {
         return estudiante;
     }
 
-    public void setEstacionEntrega(Station estacionEntrega) {
-        if (estacionEntrega != null && estacionEntrega.getBicicletasAlmacenadas() != estacionEntrega.getMaxBicicletas()) {
+    public boolean setEstacionEntrega(Station estacionEntrega) {
+        if (estacionEntrega != null && verificarBicicletaEstacion()) {
             this.estacionEntrega = estacionEntrega;
+            return true;
         } else {
             System.out.println("La estación de entrega está llena. ");
+            return false;
         }
     }
+
+    public boolean setEstacionRecogida(Station estacionRecogida) {
+        if (estacionRecogida != null && estacionRecogida.aquiEstaBicicleta(bicicletaReservada) == "La bicicleta" + bicicletaReservada.getId() + "se encuentra aquí.") {
+            this.estacionRecogida = estacionRecogida;
+            return true;
+        } else {
+            return false;
+        }
+    } 
 
     public void realizarReserva() {
         if (bicicletaReservada.reservar()) {
@@ -84,8 +95,12 @@ public class Reservar {
         }
     }
 
-    public void verificarBicicletaEstacion() {
-        estacionRecogida.aquiEstaBicicleta(bicicletaReservada);
+    public boolean verificarBicicletaEstacion() {
+         if(estacionRecogida.aquiEstaBicicleta(bicicletaReservada)=="La bicicleta" + bicicletaReservada.getId() + "se encuentra aquí.") {
+            return true;
+        } else {
+            return false;
+        }
     }
 
 
