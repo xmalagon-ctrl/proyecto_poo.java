@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.Scanner;
 
+
 public class Main {
     
     public static void main(String[] args) {
@@ -11,8 +12,8 @@ public class Main {
         boolean verif_u, verif_tiun, verif_CC_TI;// v_f = true; 
         Student estudiante;
         Administrator administrador;
-        var listaEstudiante =new ArrayList<Student>();
-        var listaAdministrador = new ArrayList<Administrator>();
+        ArrayList<Student> listaEstudiante = new ArrayList<>();
+        ArrayList<Administrator> listaAdministrador = new ArrayList<>();
         var estaciones = new ArrayList<Station>(); //lista de estaciones
         //Estación 1: Calle 53
         estaciones.add(new Station("Calle 53",15));
