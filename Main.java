@@ -1,8 +1,7 @@
 import java.util.ArrayList;
 import java.util.Scanner;
 
-
-public class Main {
+public class main {
     
     public static void main(String[] args) {
         
@@ -14,7 +13,7 @@ public class Main {
         Administrator administrador;
         ArrayList<Student> listaEstudiante = new ArrayList<>();
         ArrayList<Administrator> listaAdministrador = new ArrayList<>();
-        var estaciones = new ArrayList<Station>(); //lista de estaciones
+        ArrayList<Station> estaciones = new ArrayList<Station>(); //lista de estaciones
         //Estación 1: Calle 53
         estaciones.add(new Station("Calle 53",15));
         //Estación 2: CYT
@@ -31,7 +30,7 @@ public class Main {
         do {
             admi_usu = verifExcepcion(sc, "Si es administrativo ingrese 1 y si es estudiante ingrese 2: ");
             sc.nextLine();
-            if(admi_usu == 1){
+                if(admi_usu == 1){
                 do{
                 //Nombre del administrador
                 System.out.print("Ingresa el nombre del administrador: ");
@@ -64,37 +63,38 @@ public class Main {
                     System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
                     menu = verifExcepcion(sc, "Ingrese el numero de lo que desea hacer: ");
 
-                    if (menu == 1){
-                        System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
-                        System.out.println("Penalizar estudiante");
-                        System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
-                      
+                    switch (menu){
+                        case 1:{
+                            System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
+                            System.out.println("Penalizar estudiante");
+                            System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
+                        break;}
 
-                    }else if ( menu == 2){
+                    case 2:{
                         System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
                         System.out.println("Agregar cicla");
                         System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
                         System.out.println();
-
-                    }else if (menu == 3){
+                    break;
+                    }case 3:{
                         System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
                         System.out.println("Reglas");
                         administrador.seeRules();
                         sc.nextLine();
     
-                    }else if ( menu == 4){
+                    }case 4:{
                         System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
                         System.out.println("Ver reportes");
                         System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
                         System.out.println();
-
-                    }else if (menu == 5){
+                    break;
+                    }case 5:{
                         System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
                         System.out.println("Quitar a acceso a estudiante");
                         System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
                         System.out.println();
-
-                    }else{
+                    break;
+                    }default:{
                         mensajeError();
                     }
                     do{
