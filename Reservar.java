@@ -6,9 +6,8 @@ public class Reservar {
     private String estadoReserva;
     private Student estudiante;
 
-    public Reservar(Station estacionRecogida, Station estacionEntrega, Bike bicicletaReservada, int tiempoReserva, Student estudiante) {
+    public Reservar(Station estacionRecogida, Bike bicicletaReservada, int tiempoReserva, Student estudiante) {
         this.estacionRecogida = estacionRecogida;
-        this.estacionEntrega = estacionEntrega;
         this.bicicletaReservada = bicicletaReservada;
         this.tiempoReserva = tiempoReserva;
         this.estudiante = estudiante;
@@ -33,11 +32,20 @@ public class Reservar {
         return estudiante;
     }
 
+    public void setEstacionEntrega(Station estacionEntrega) {
+        if (estacionEntrega != null && estacionEntrega.getBicicletasAlmacenadas() != estacionEntrega.getMaxBicicletas()) {
+            this.estacionEntrega = estacionEntrega;
+        } else {
+            System.out.println("La estación de entrega está llena. ");
+            this.estacionEntrega = estacionRecogida;
+        }
+    }
+
     public void realizarReserva() {
         if (bicicletaReservada.reservar()) {
             estadoReserva = "reservada";
 
-            estacionRecogida.devolverBicicleta(bicicletaReservada);
+            estacionRecogida.retirarBicicleta(bicicletaReservada);
             estudiante.asignarBicicleta(bicicletaReservada);
 
             System.out.println("Reserva realizada con éxito.");
@@ -52,7 +60,7 @@ public class Reservar {
             bicicletaReservada.disponible();
             estadoReserva = "finalizada";
 
-            estacionEntrega.asignarBicicleta(bicicletaReservada);
+            estacionEntrega.agregarBicicleta(bicicletaReservada);
             estudiante.devolverBicicleta(bicicletaReservada);
 
             System.out.println("Reserva finalizada. Gracias por usar nuestro servicio.");
@@ -68,7 +76,7 @@ public class Reservar {
             bicicletaReservada.disponible();
             estadoReserva = "cancelada";
 
-            estacionRecogida.asignarBicicleta(bicicletaReservada);
+            estudiante.asignarBicicleta(bicicletaReservada);
             estudiante.devolverBicicleta(bicicletaReservada);
 
             System.out.println("Reserva cancelada.");
@@ -77,6 +85,9 @@ public class Reservar {
         }
     }
 
+    public void verificarBicicletaEstacion() {
+        estacionRecogida.aquiEstaBicicleta(bicicletaReservada);
+    }
 
 
     public void setEstadoReserva(String estadoReserva) {
