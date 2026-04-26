@@ -1,48 +1,137 @@
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
-        public static void main(String[] args) {
+    
+    public static void main(String[] args) {
         
         Scanner sc = new Scanner(System.in);
-        User usuario;
-        String nombre_u, opcionMenu;
-        int tiun = 0, num_estacion, id, admi_usu, menu;
-        boolean verif_u, verif_tiun;// v_f = true; 
+        String nombre_st, opcionMenu, nombre_admi;
+        int tiun = 0, num_estacion, id, admi_usu, menu,cedulaEstudiante, cedulaAdmi;
+        boolean verif_u, verif_tiun, verif_CC_TI;// v_f = true; 
+        Student estudiante;
+        Administrator administrador;
+        var listaEstudiante =new ArrayList<Student>();
+        var listaAdministrador = new ArrayList<Administrator>();
+        var estaciones = new ArrayList<Station>(); //lista de estaciones
         //Estación 1: Calle 53
-        Station calle53 = new Station("Calle 53", 15);
+        estaciones.add(new Station("Calle 53",15));
         //Estación 2: CYT
-        Station CYT = new Station("CYT", 50);
+        estaciones.add(new Station("CYT", 50));
         //Estación 3: Uriel
-        Station Uriel = new Station("Uriel", 15);   
+        estaciones.add(new Station("Uriel", 15));   
         //Estación 4: Calle 45
-        Station calle45 = new Station("Calle 45", 15);
+        estaciones.add(new Station("Calle 45", 15));
         //Estación 5: Calle 26  
-        Station calle26 = new Station("Calle 26", 30);
+        estaciones.add(new Station("Calle 26", 30));
         //Estación 6: Calle 30
-        Station calle30 = new Station("Calle 30", 40);
-        
+        estaciones.add(new Station("Calle 30", 40));
+
         do {
-            admi_usu = verifExcepcion(sc, "Si es administrativo ingrese 1 y si es usuario ingrese 2: ");
+            admi_usu = verifExcepcion(sc, "Si es administrativo ingrese 1 y si es estudiante ingrese 2: ");
             sc.nextLine();
             if(admi_usu == 1){
-                //codigo para el administrativo
+                do{
+                //Nombre del administrador
+                System.out.print("Ingresa el nombre del administrador: ");
+                nombre_admi = sc.nextLine();
+
+                //Numero C.C 
+                cedulaAdmi = verifExcepcion(sc, "Ingresa su C.C: ");
+
+                //Clase administrador
+                administrador = new Administrator(nombre_admi,cedulaAdmi);
+                sc.nextLine();
+                verif_u = administrador.setUserName(nombre_admi);
+                verif_CC_TI = administrador.setCedula(cedulaAdmi);
+    
+                }while(!verif_u || !verif_CC_TI);
+
+                //Agregar administrador a la lista de administrador
+                listaAdministrador.add(administrador);
+
+                do{
+                    //Menu principal
+                    System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
+                    System.out.println("Menu principal: ");
+                    System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
+                    System.out.println("1. Penalizar estudiante");
+                    System.out.println("2. Agregar cicla");
+                    System.out.println("3. Reglas");
+                    System.out.println("3. Ver reportes");
+                    System.out.println("5. Quitar a acceso a estudiante");
+                    System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
+                    menu = verifExcepcion(sc, "Ingrese el numero de lo que desea hacer: ");
+
+                    if (menu == 1){
+                        System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
+                        System.out.println("Penalizar estudiante");
+                        System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
+                      
+
+                    }else if ( menu == 2){
+                        System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
+                        System.out.println("Agregar cicla");
+                        System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
+                        System.out.println();
+
+                    }else if (menu == 3){
+                        System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
+                        System.out.println("Reglas");
+                        administrador.seeRules();
+                        sc.nextLine();
+    
+                    }else if ( menu == 4){
+                        System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
+                        System.out.println("Ver reportes");
+                        System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
+                        System.out.println();
+
+                    }else if (menu == 5){
+                        System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
+                        System.out.println("Quitar a acceso a estudiante");
+                        System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
+                        System.out.println();
+
+                    }else{
+                        mensajeError();
+                    }
+                    do{
+                        System.out.print("Desea volver al menu principal? (si/no); ");
+                        opcionMenu = sc.nextLine().toLowerCase();
+                        if (opcionMenu.equals("no")){
+                            System.out.println("Gracias por usar el aplicativo.");
+                        }else{
+                            mensajeError();
+                        }
+                    }while(!opcionMenu.equals("no") && !opcionMenu.equals("si"));
+                    
+
+                }while (menu > 5 || menu < 0 || opcionMenu.equals("si"));
 
             }else if (admi_usu == 2){
                 do{
-                //Nombre del usuario
-                System.out.print("Ingresa el nombre del usuario: ");
-                nombre_u = sc.nextLine();
+                //Nombre del estudiante
+                System.out.print("Ingresa el nombre del estudiante: ");
+                nombre_st= sc.nextLine();
+
+                //Numero C.C o T.I
+                cedulaEstudiante = verifExcepcion(sc, "Ingresa su C.C o T.I: ");
 
                 //Numero tiun
                 tiun = verifExcepcion(sc, "Ingresa el Tiun de su carnet: ");
                 
-                //Clase user
-                usuario = new User(nombre_u, tiun);
+                //Clase estudiante
+                estudiante = new Student(nombre_st,cedulaEstudiante, tiun);
                 sc.nextLine();
-                verif_u = usuario.setUserName(nombre_u);
-                verif_tiun = usuario.setTiun(tiun);
+                verif_u = estudiante.setUserName(nombre_st);
+                verif_CC_TI = estudiante.setCedula(cedulaEstudiante);
+                verif_tiun = estudiante.setTiun(tiun);
     
-                }while(!verif_u || !verif_tiun);
+                }while(!verif_u || !verif_tiun || !verif_CC_TI);
+
+                //agregar estudiante a la lista de estudiantes
+                listaEstudiante.add(estudiante);
 
                 do{
                     //Menu principal
@@ -64,12 +153,12 @@ public class Main {
                       //  System.out.println(" ");
                         System.out.println("Estaciones: ");
                         System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
-                        System.out.println("1." + calle53.getName_station());
-                        System.out.println("2." + CYT.getName_station());
-                        System.out.println("3." + Uriel.getName_station());
-                        System.out.println("4." + calle45.getName_station());
-                        System.out.println("5." + calle26.getName_station());
-                        System.out.println("6." + calle30.getName_station());
+                        System.out.println("1. Calle 53");
+                        System.out.println("2. CYT");
+                        System.out.println("3. Uriel");
+                        System.out.println("4. Calle 45");
+                        System.out.println("5. Calle 26");
+                        System.out.println("6.Calle 30");
                         System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
                         //bucle para error
                         num_estacion = verifExcepcion(sc, "Ingresa el numero de la estacion que deseas usar (1 a 5): "); //hacer validador de rango de estaciones dentro de la clase
@@ -86,7 +175,7 @@ public class Main {
                     }else if (menu == 3){
                         System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
                         System.out.println("Reglas");
-                        usuario.seeRules();
+                        estudiante.seeRules();
                         sc.nextLine();
     
                     }else if ( menu == 4){
@@ -123,6 +212,8 @@ public class Main {
             }
         }while(admi_usu < 1 || admi_usu > 2);
         
+
+
         sc.close();
     }
 
