@@ -191,7 +191,12 @@ public class Main {
 
                 //agregar estudiante a la lista de estudiantes
                 listaEstudiante.add(estudiante);
-
+                //metodos del historial ***********************************************************************************
+                        DocReader.crearArchivo("poo/archivoHistorial/estudianteReal.txt");
+                        DocReader.verificarDuplicados("poo/archivoHistorial/estudianteReal.txt", tiun);
+                        DocReader.contenidoArchivo("poo/archivoHistorial/estudianteReal.txt", nombre_st, tiun);
+                        DocReader.leerArchivo("poo/archivoHistorial/estudianteReal.txt");
+                //*-********************************************************************************************************
                 do{
                     //Menu principal
                     System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
