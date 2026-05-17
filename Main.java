@@ -103,6 +103,33 @@ public class Main {
                             System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
                             System.out.println("Agregar cicla");
                             System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
+                                                   System.out.println("Estaciones: ");
+                        System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");                         
+                        System.out.println("1. Calle 53");
+                         System.out.println("2. CYT");
+                         System.out.println("3. Uriel");
+                         System.out.println("4. Calle 45");
+                         System.out.println("5. Calle 26");
+                         System.out.println("6. Calle 30");
+                         System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
+                        System.out.print("Ingrese la estación deseada: ");
+                        num_estacion = sc.nextInt();
+                        System.out.print("Ingrese el ID de la bicicleta: ");
+                        id = sc.nextInt();
+                        //Se crea una nueva bicicleta
+
+                        Bike newBike = new Bike (id, "disponible");
+
+                        //Se verifica la capacidad de la estacion y se agrega la bicicleta
+
+                        boolean fueAgregada = estaciones.get(num_estacion-1).agregarBicicleta(newBike);
+                        
+                        if(fueAgregada){
+                               System.out.println("La bicicleta fue agregada correctamente.");
+                        }else{
+                               System.out.println("La estación está llena.");
+                        }
+
                             System.out.println();
 
                         }else if (menu == 3){
@@ -192,12 +219,53 @@ public class Main {
                         System.out.println("5. Calle 26");
                         System.out.println("6. Calle 30");
                         System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
-                        //bucle para error
-                        num_estacion = verifExcepcion(sc, "Ingresa el numero de la estacion que deseas usar (1 a 5): "); //hacer validador de rango de estaciones dentro de la clase
-                        //muestra el id de bicicletas disponibles en esa estacion(y tal vez al frente muestre de una ves su estado)
-                        id = verifExcepcion(sc, "Ingresa el id de la cicla que deseas usar: ");
-                        //ingresa id 
+                                                //bucle para error
+                        num_estacion = verifExcepcion(sc, "Ingresa el numero de la estacion que deseas usar (1 a 6): "); //hacer validador de rango de estaciones dentro de la clase
 
+                        //Se guarda la estación elegida
+                        Station estacionRecogida = estaciones.get(num_estacion - 1);
+
+                        //Verifica la capacidad de la estación
+                        if(estacionRecogida.getBicicletasAlmacenadas() > 0){
+                              //muestra el id de bicicletas disponibles en esa estacion(y tal vez al frente muestre de una ves su estado)
+                            for(int i = 0; i < estacionRecogida.getBicicletasAlmacenadas(); i++){
+                                estacionRecogida.getBicis()[i].info();
+                            }
+
+                        //ingresa id 
+                        id = verifExcepcion(sc, "Ingresa el id de la cicla que deseas usar: ");
+                        //inicializa una bicicleta
+                        Bike bicicleta = null;
+                        //Compara el id ingresado con los que se encuentran en la lista.
+                        for(int i = 0; i < estacionRecogida.getBicicletasAlmacenadas(); i++){
+                            //Si encuentra uno igual, asigna la bicicleta
+                            if(estacionRecogida.getBicis()[i].getId() == id){
+                                 bicicleta = estacionRecogida.getBicis()[i];
+                                }
+                        }
+                        
+                        if(bicicleta != null){
+                            //Clase reserva
+                             Reservar reserva = new Reservar( bicicleta, 20, estudiante);
+                            //Verifica si la estacion seleccionada 
+                             boolean recogidaCorrecta = reserva.setEstacionRecogida(estacionRecogida);
+                             
+                             if(recogidaCorrecta){
+                                int entrega = verifExcepcion(sc, "Ingrese estación de entrega: ");
+                                Station estacionEntrega = estaciones.get(entrega - 1);
+                                boolean entregaCorrecta = reserva.setEstacionEntrega(estacionEntrega);
+                                 if(entregaCorrecta){
+                                    reserva.realizarReserva();
+                                 }
+                            }
+                        
+                        }else{
+                            System.out.println("No existe bicicleta con ese ID.");
+                        }
+
+                        }else{
+                        System.out.println("No hay bicicletas disponibles.");
+                        }
                     }else if ( menu == 2){
                         System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
                         System.out.println("Estado de la cuenta");
