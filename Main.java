@@ -92,9 +92,8 @@ public class Main {
                                     System.out.print("Ingrese tiun que desea buscar: ");
                                     tiun = sc.nextInt();
                                     sc.nextLine();
-                                    System.out.print("Ingrese el estado que desea ponerle: ");
-                                    estado = sc.nextLine();
-                                    estadoCorrecto = adminsAutorizados.get(posicionAdministrador).penalizeStudent(listaEstudiante,tiun, estado);
+                                    
+                                    estadoCorrecto = adminsAutorizados.get(posicionAdministrador).penalizeStudent(listaEstudiante,tiun);
                             }
                             }while(!estadoCorrecto);
 
