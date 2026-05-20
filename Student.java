@@ -1,10 +1,17 @@
  //clase hija  de madre para estudiante
+
+import java.time.LocalDateTime; // Para capturar la fecha y hora exacta
+
+
 public class Student extends User {
     //Atributos
-    private long tiun, numEmergencia; //codigo del carnet
+    private long tiun, numEmergencia;
     private String state = "activo";
     public boolean TieneReserva = false; 
     public Bike bicicletaAsignada = null;
+    private LocalDateTime fechaFinPenalizacion;
+    private int contadorPenalizaciones = 0;
+    
 
     //Constructor
     public Student (String username, long cedula, long tiun){
@@ -17,12 +24,18 @@ public class Student extends User {
     public long getTiun(){
         return tiun;
     }
-
+    public LocalDateTime getFechaFinPenalizacion(){
+        return fechaFinPenalizacion;
+    }
     public String getState(){
         return state;
     }
+    public int getContadorPenalizaciones(){
+        return contadorPenalizaciones;
+    }
 
         //Set
+
 
     //verificacion de tiun
     public boolean setTiun(long tiun){
@@ -47,22 +60,19 @@ public class Student extends User {
         }
     }
 
-    //verificacion estado
-    public boolean setState(String state){ //para que lo edite el administrador
-        state = state.toLowerCase();
-        if (state.equals("activo")){
-            this.state = state;  
-            return true;
-        }else if (state.equals("bloqueado")){
-            this.state = state;
-            return true;
-        }else {
-            System.out.println("Estado invalido");
-            return false;
-        }
+    public void setFechaFinPenalizacion( LocalDateTime fechaFinPenalizacion){
+        this.fechaFinPenalizacion=  fechaFinPenalizacion;
+    }
+    public void setState(String state){
+        this.state = state;
+    }
+    public void setContadorPenalizaciones(){
+        this.contadorPenalizaciones ++;
     }
 
-    public void asignarBicicleta(Bike bicicleta){
+    //METODOS
+
+    public void asignarBicicleta(Bike bicicleta){ //se le tiene que agregar al administrador esta opcion para que puede ver que ciclas tienen reservadas por que estudiantes
         this.bicicletaAsignada = bicicleta; //cuando haya ids se les asigna == se debe completar
         this.TieneReserva = true;
     }
@@ -70,7 +80,7 @@ public class Student extends User {
     public void devolverBicicleta(Bike bicicleta){
         this.bicicletaAsignada = null;
         this.TieneReserva = false;
-        }
+    }  
     
 }
 
