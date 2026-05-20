@@ -88,7 +88,7 @@ public abstract class User {
         System.out.println("3. Penalizaciones");
         System.out.println("* Mal uso o daños: bloqueo de la cuenta por 15 días.");
         System.out.println("* No devolución en el tiempo establecido (15 minutos): bloqueo de la cuenta por 15 días.");
-        System.out.println("* En caso de reincidencia, el bloqueo podrá extenderse hasta 30 días o suspensión definitiva.");
+        System.out.println("* En caso de que cuente con 2 penalizaciones, el bloqueo podrá extenderse hasta 30 días o suspensión definitiva.");
         System.out.println("4. Responsabilidades del usuario");
         System.out.println("* Verificar el estado de la bicicleta antes de retirarla.");
         System.out.println("* Reportar cualquier daño o irregularidad inmediatamente.");
