@@ -61,6 +61,19 @@ public class Bike {
         System.out.println("estado: " + state);
     }
 
+//metodo para cambiar el estado
 
+public boolean cambiarEstado(String newState){
+
+    if(newState.equals("disponible")){
+        disponible();
+        return true;
+    }else if(newState.equals("mantenimiento")){
+        No_disponible();
+        return true;
+    }
+    System.out.println("Estado inválido.");
+    return false;
+}
 }
 
