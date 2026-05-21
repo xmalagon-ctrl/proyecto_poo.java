@@ -11,6 +11,7 @@ public class Student extends User {
     public Bike bicicletaAsignada = null;
     private LocalDateTime fechaFinPenalizacion;
     private int contadorPenalizaciones = 0;
+    private Reservar reserva;
     
 
     //Constructor
@@ -33,10 +34,16 @@ public class Student extends User {
     public int getContadorPenalizaciones(){
         return contadorPenalizaciones;
     }
+    public Reservar getReserva(){
+        return reserva;
+    }
 
         //Set
+    public void setReserva(Reservar reserva) {
+        this.reserva = reserva;
+    }
 
-
+        
     //verificacion de tiun
     public boolean setTiun(long tiun){
         String tiunS = String.valueOf(tiun);
@@ -80,8 +87,24 @@ public class Student extends User {
     public void devolverBicicleta(Bike bicicleta){
         this.bicicletaAsignada = null;
         this.TieneReserva = false;
-    }  
+    }
     
+    public void activacionDeUso(){
+        if (this.reserva != null) {
+            reserva.activacionUso();
+        }/*else {
+            System.out.println("Este estudiante no tiene una reserva asignada en su cuenta.");
+        }*/
+    }
+
+    public void finalizacionDeUso(){
+        if (this.reserva != null) {
+            reserva.finalizarUso();
+        }/*else {
+            System.out.println("Este estudiante no tiene un uso de bicicleta activo.");
+        }*/
+    }
+  
 }
 
 
