@@ -240,39 +240,6 @@ public class Main {
                     }while (menu > 5 || menu < 0 || opcionMenu.equals("si"));
 
                 }
-    
-                            System.out.println();
-
-                        }else if (menu == 5){
-                            System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
-                            System.out.println("Quitar a acceso a estudiante");
-                            System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
-                            
-                            tiun = verifExcepcion(sc, "Ingrese el Tiun del estudiante que desea remover");
-                            if(adminsAutorizados.get(posicionAdministrador).removeStudent(listaEstudiante, tiun)){
-                                System.out.println("El estudiante fue removido exitosamente");
-                            }else{
-                                System.out.println("El TIUN no pertenece a ningún estudiante registrado.");
-                            }
-                            System.out.println();
-
-                        }else{
-                            mensajeError();
-                        }
-                        do{
-                            System.out.print("Desea volver al menu principal? (si/no); ");
-                            opcionMenu = sc.nextLine().toLowerCase();
-                            if (opcionMenu.equals("no")){
-                                System.out.println("Gracias por usar el aplicativo.");
-                            }else{
-                                mensajeError();
-                            }
-                        }while(!opcionMenu.equals("no") && !opcionMenu.equals("si"));
-
-                    }while (menu > 5 || menu < 0 || opcionMenu.equals("si"));
-
-                }
- 
 
             }else if (admi_usu == 2){
                 do{
