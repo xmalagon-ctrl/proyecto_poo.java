@@ -7,18 +7,20 @@ public class Main {
     public static void main(String[] args) {
         
         Scanner sc = new Scanner(System.in);
-        String nombre_st = " ", opcionMenu = " ", nombre_admi, estado;
+        String nombre_st = " ", opcionMenu = " ", nombre_admi;
         int tiun = 0, num_estacion, id, admi_usu, menu,cedulaEstudiante, cedulaAdmi;
-        boolean verif_u , verif_tiun, verif_CC_TI, estadoCorrecto ;
-        Student estudiante, est_admi;
+        boolean verif_u , verif_tiun, verif_CC_TI, estadoCorrecto,fueAgregada;
+        Student estudiante;
+        Station estacionRecogida,estacionEntrega;
+        Bike bicicleta = null;
+        Reservar reserva = null;
         ArrayList<Student> listaEstudiante = new ArrayList<>();
-        ArrayList<Administrator> listaAdministrador = new ArrayList<>();
         ArrayList<Comment> listaComentarios = new ArrayList<>();
         var estaciones = new ArrayList<Station>(); //lista de estaciones
         //Estación 1: Calle 53
-        estaciones.add(new Station("Calle 53",15));
+        estaciones.add(new Station("Calle 53",2));
         //Estación 2: CYT
-        estaciones.add(new Station("CYT", 50));
+        estaciones.add(new Station("CYT", 2));
         //Estación 3: Uriel
         estaciones.add(new Station("Uriel", 15));   
         //Estación 4: Calle 45
@@ -77,6 +79,8 @@ public class Main {
                         System.out.println("3. Reglas");
                         System.out.println("4. Ver reportes");
                         System.out.println("5. Quitar a acceso a estudiante");
+                        System.out.println("6. Activar el uso de una bicicleta");
+                        System.out.println("7. Desactivar el uso de una bicicleta");
                         System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
                         menu = verifExcepcion(sc, "Ingrese el numero de lo que desea hacer: ");
 
@@ -84,7 +88,6 @@ public class Main {
                             System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
                             System.out.println("Penalizar estudiante");
                             System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
-                            sc.nextLine();
                             do{
                                 if(listaEstudiante.isEmpty()){
                                     System.out.println("No hay estudiantes registrados.");
@@ -95,42 +98,44 @@ public class Main {
                                     sc.nextLine();
                                     
                                     estadoCorrecto = adminsAutorizados.get(posicionAdministrador).penalizeStudent(listaEstudiante,tiun);
-                            }
+                                }
                             }while(!estadoCorrecto);
-
+                            sc.nextLine();
 
                         }else if ( menu == 2){
+                        
                             System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
                             System.out.println("Agregar cicla");
                             System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
-                                                   System.out.println("Estaciones: ");
-                        System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");                         
-                        System.out.println("1. Calle 53");
-                         System.out.println("2. CYT");
-                         System.out.println("3. Uriel");
-                         System.out.println("4. Calle 45");
-                         System.out.println("5. Calle 26");
-                         System.out.println("6. Calle 30");
-                         System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
-                        System.out.print("Ingrese la estación deseada: ");
-                        num_estacion = sc.nextInt();
-                        System.out.print("Ingrese el ID de la bicicleta: ");
-                        id = sc.nextInt();
-                        //Se crea una nueva bicicleta
-
-                        Bike newBike = new Bike (id, "disponible");
-
-                        //Se verifica la capacidad de la estacion y se agrega la bicicleta
-
-                        boolean fueAgregada = estaciones.get(num_estacion-1).agregarBicicleta(newBike);
-                        
-                        if(fueAgregada){
-                               System.out.println("La bicicleta fue agregada correctamente.");
-                        }else{
-                               System.out.println("La estación está llena.");
-                        }
-
-                            System.out.println();
+                            do{
+                                do{
+                                    num_estacion = seleccionDeEstacion(sc, "Ingrese la estación deseada: ");
+                                    id = idCicla(sc, "Ingrese el ID de la bicicleta: ");
+                                    //Se crea una nueva bicicleta
+                                    Bike newBike = new Bike (id, "disponible");
+                                    //Se verifica la capacidad de la estacion y se agrega la bicicleta
+                                    fueAgregada = estaciones.get(num_estacion-1).alertaMaxBicicleta();
+        
+                                    if (!fueAgregada) {
+                                        estaciones.get(num_estacion-1).agregarBicicleta(newBike);
+                
+                                    }else{
+                                        System.out.println("Agregue la cicla en otra estacion");
+                                    }
+                                }while (fueAgregada);
+                                sc.nextLine();
+                                do{
+                                    System.out.print("Desea agregar otra cicla? (si/no); ");
+                                    opcionMenu = sc.nextLine().toLowerCase();
+                                    if (opcionMenu.equals("no")){
+                                        System.out.println("Se agregaron las ciclas con exito.");
+                                    }else{
+                                        mensajeError();
+                                    }
+                                }while(!opcionMenu.equals("no") && !opcionMenu.equals("si"));
+                                
+                            }while (opcionMenu.equals("si"));
+                            
 
                         }else if (menu == 3){
                             System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
@@ -142,6 +147,8 @@ public class Main {
                             System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
                             System.out.println("Ver reportes");
                             System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
+                            System.out.println();
+                            
                          int option = 0;
                             do{
                             System.out.println("1. Estado de las bicicletas");
@@ -154,62 +161,50 @@ public class Main {
 
                                 case 1:{
                                     //Estado de las bicicletas
-                                    System.out.println("Estaciones: ");
-                                    System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
-                                    System.out.println("1. Calle 53");
-                                    System.out.println("2. CYT");
-                                    System.out.println("3. Uriel");
-                                    System.out.println("4. Calle 45");
-                                    System.out.println("5. Calle 26");
-                                    System.out.println("6. Calle 30");
-                                    System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
-
-                                    num_estacion = verifExcepcion(sc,"Ingrese la estación deseada: ");
-                                    sc.nextLine();
+                                    num_estacion =seleccionDeEstacion(sc, "Ingrese la estación deseada: ");
                                     // Se llama al método que imprime la información de las biciletas 
                                     estaciones.get(num_estacion - 1).infoBicicletasGeneral();
                                     System.out.println("¿Desea cambiar el estado de una bicicleta? si/no");
                                     opcionMenu = sc.nextLine().toLowerCase();
 
-                             if(opcionMenu.equals("si")){
-                                 System.out.print("Ingrese el ID de la bicicleta: ");
-                                 id = sc.nextInt();
-                                 sc.nextLine();
-                                 System.out.print("Escriba el estado (disponible/mantenimiento): ");
-                                 String stateBike = sc.nextLine().toLowerCase();
-                                 boolean estadoActualizado = estaciones.get(num_estacion - 1).cambiarEstadoBici(id, stateBike);
-                                 if(estadoActualizado){
-                                     System.out.println("Estado actualizado.");
-                                 }else{
-                                     System.out.println("No fue posible actualizar el estado.");
-                                 }
-                             }else if(!opcionMenu.equals("no")){
-                                 mensajeError();
-                             }
-                                    break;
-                                }
-
-                                case 2:{
-                                    //Reportes o comentarios de los estudiantes
-                                    if(listaComentarios.isEmpty()){
-                                        System.out.println("No hay comentarios registrados.");
-                                    }else{
-                                    //Imprime los comentarios 
-                                        for(Comment comentario : listaComentarios){
-                                        comentario.verComentario();
+                                    if(opcionMenu.equals("si")){
+                                        System.out.print("Ingrese el ID de la bicicleta: ");
+                                        id = sc.nextInt();
+                                        sc.nextLine();
+                                        System.out.print("Escriba el estado (disponible/mantenimiento): ");
+                                        String stateBike = sc.nextLine().toLowerCase();
+                                        boolean estadoActualizado = estaciones.get(num_estacion - 1).cambiarEstadoBici(id, stateBike);
+                                        if(estadoActualizado){
+                                            System.out.println("Estado actualizado.");
+                                        }else{
+                                            System.out.println("No fue posible actualizar el estado.");
                                         }
+                                    }else if(!opcionMenu.equals("no")){
+                                        mensajeError();
                                     }
-                                    break;
-                                }
-                                default:{
-                                    mensajeError();
-                                }
+                                            break;
+                                        }
 
-                            }
+                                        case 2:{
+                                            //Reportes o comentarios de los estudiantes
+                                            if(listaComentarios.isEmpty()){
+                                                System.out.println("No hay comentarios registrados.");
+                                            }else{
+                                            //Imprime los comentarios 
+                                                for(Comment comentario : listaComentarios){
+                                                comentario.verComentario();
+                                                }
+                                            }
+                                            break;
+                                        }
+                                        default:{
+                                            mensajeError();
+                                        }
 
-                        }while(option==0 || option<1 || option>2);
+                                    }
 
-                        System.out.println();
+                                }while(option==0 || option<1 || option>2);
+
 
                         }else if (menu == 5){
                             System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
@@ -221,9 +216,30 @@ public class Main {
                             }else{
                                 System.out.println("El TIUN no pertenece a ningún estudiante registrado.");
                             }
+
+                        }else if (menu == 6){
+                            System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
+                            System.out.println("Activar el uso de una bicicleta");
+                            System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
+                            System.out.println();
+                            if (reserva != null) {
+                            recorreListaEstudiantes(sc, 1, listaEstudiante); 
+                            } else {
+                                System.out.println("No hay reservas en este momento.");
+                            }
+
+                        }else if (menu == 7){
+                            System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
+                            System.out.println("Desactivar el uso de una bicicleta");
+                            System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
                             System.out.println();
 
-                    
+                            if (reserva != null) {
+                            recorreListaEstudiantes(sc, 2, listaEstudiante); 
+                            } else {
+                                System.out.println("No hay reservas en este momento.");
+                            }
+                
                         }else{
                             mensajeError();
                         }
@@ -237,9 +253,10 @@ public class Main {
                             }
                         }while(!opcionMenu.equals("no") && !opcionMenu.equals("si"));
 
-                    }while (menu > 5 || menu < 0 || opcionMenu.equals("si"));
+                    }while (menu > 7 || menu < 0 || opcionMenu.equals("si"));
 
                 }
+                
 
             }else if (admi_usu == 2){
                 do{
@@ -278,8 +295,8 @@ public class Main {
                     System.out.println("1. Reservacion de cicla");
                     System.out.println("2. Estado de la cuenta");
                     System.out.println("3. Reglas");
-                    System.out.println("3. Tiempo de reservacion");
-                    System.out.println("5. Reporte o comentario sobre el servicio");
+                    System.out.println("4. Estado de reservacion");
+                    System.out.println("5. Queja o comentario sobre servicio");
                     System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
                     menu = verifExcepcion(sc, "Ingrese el numero de lo que desea hacer: ");
 
@@ -287,68 +304,73 @@ public class Main {
                         System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
                         System.out.println("Reservacion de cicla");
                         System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
-                      //  System.out.println(" ");
-                        System.out.println("Estaciones: ");
-                        System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
-                        System.out.println("1. Calle 53");
-                        System.out.println("2. CYT");
-                        System.out.println("3. Uriel");
-                        System.out.println("4. Calle 45");
-                        System.out.println("5. Calle 26");
-                        System.out.println("6. Calle 30");
-                        System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
-                                                //bucle para error
-                        num_estacion = verifExcepcion(sc, "Ingresa el numero de la estacion que deseas usar (1 a 6): "); //hacer validador de rango de estaciones dentro de la clase
+                        boolean verifEstacion = false;
+                        do{
+                        num_estacion = seleccionDeEstacion(sc, "Ingresa el numero de la estacion que deseas usar (1 a 6): ");
+                        // Se guarda la estación elegida
+                        estacionRecogida = estaciones.get(num_estacion - 1);
 
-                        //Se guarda la estación elegida
-                        Station estacionRecogida = estaciones.get(num_estacion - 1);
-
-                        //Verifica la capacidad de la estación
-                        if(estacionRecogida.getBicicletasAlmacenadas() > 0){
-                              //muestra el id de bicicletas disponibles en esa estacion(y tal vez al frente muestre de una ves su estado)
-                            for(int i = 0; i < estacionRecogida.getBicicletasAlmacenadas(); i++){
-                                estacionRecogida.getBicis()[i].info();
-                            }
-
-                        //ingresa id 
-                        id = verifExcepcion(sc, "Ingresa el id de la cicla que deseas usar: ");
-                        //inicializa una bicicleta
-                        Bike bicicleta = null;
-                        //Compara el id ingresado con los que se encuentran en la lista.
-                        for(int i = 0; i < estacionRecogida.getBicicletasAlmacenadas(); i++){
-                            //Si encuentra uno igual, asigna la bicicleta
-                            if(estacionRecogida.getBicis()[i].getId() == id){
-                                 bicicleta = estacionRecogida.getBicis()[i];
-                                }
-                        }
                         
-                        if(bicicleta != null){
-                            //Clase reserva
-                             Reservar reserva = new Reservar( bicicleta, 20, estudiante);
-                            //Verifica si la estacion seleccionada 
-                             boolean recogidaCorrecta = reserva.setEstacionRecogida(estacionRecogida);
-                             
-                             if(recogidaCorrecta){
-                                int entrega = verifExcepcion(sc, "Ingrese estación de entrega: ");
-                                Station estacionEntrega = estaciones.get(entrega - 1);
-                                boolean entregaCorrecta = reserva.setEstacionEntrega(estacionEntrega);
-                                 if(entregaCorrecta){
-                                    reserva.realizarReserva();
-                                 }
-                            }
-                        
-                        }else{
-                            System.out.println("No existe bicicleta con ese ID.");
-                        }
+                            //boolean verifCicla = false;
+                            if(estacionRecogida.getBicis().size() > 0){
+                            
+                                System.out.println("--- BICICLETAS DISPONIBLES EN LA ESTACIÓN ---");
+                                estacionRecogida.infoBicicletasDisponibles();
+                                System.out.println("---------------------------------------------\n");
 
-                        }else{
-                        System.out.println("No hay bicicletas disponibles.");
-                        }
+                                do{
+                                    // Ingresa ID  de cicla a usar
+                                    id = idCicla(sc, "Ingresa el id de la cicla que deseas usar: ");
+                                    for (Bike bike : estacionRecogida.getBicis()) {
+                                        if (bike.getId() == id) {
+                                            bicicleta = bike;
+                                            //verifCicla = true; 
+                                            break;
+                                        }
+                                    }
+                                    if(bicicleta != null /*|| verifCicla*/){
+                                    // Clase reserva
+                                        reserva = new Reservar(bicicleta, estudiante);
+                                        // Verifica si la estación seleccionada es correcta
+                                        boolean recogidaCorrecta = reserva.setEstacionRecogida(estacionRecogida);
+                                        
+                                        if(recogidaCorrecta){
+                                            int entrega = seleccionDeEstacion(sc, "Ingrese estación de entrega (1 a 6): ");
+                                            estacionEntrega = estaciones.get(entrega - 1);
+                                            boolean entregaCorrecta = reserva.setEstacionEntrega(estacionEntrega);
+                                            
+                                            if(entregaCorrecta){
+                                                reserva.realizarReserva();
+                                                verifEstacion = false;
+                                            }
+                                        }
+                                    
+                                    }else{
+                                        System.out.println("No existe bicicleta con ese ID. \nIngrese ID correcto.");
+                                    }
+                                    sc.nextLine();
+                                }while(bicicleta == null/*|| !verifCicla*/);
+                                
+                            }else{
+                                System.out.println("No hay bicicletas en esta estación. \nIngrese otra estacion");
+                                verifEstacion = true;
+                                
+                            }
+                        }while(verifEstacion);
+                        
+
                     }else if ( menu == 2){
                         System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
                         System.out.println("Estado de la cuenta");
                         System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
                         System.out.println();
+                        if (reserva != null) {
+                            // El estudiante solo consulta. Tu método se encarga de decirle si sigue activa o si se le canceló en ese instante
+                            reserva.estadoDePenalizacion(); 
+                        } else {
+                            System.out.println("Usted no cuenta con ninguna reservacion previa, por ende no cuenta con penalizaciones.");
+                        }
+                        sc.nextLine();
 
                     }else if (menu == 3){
                         System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
@@ -358,23 +380,22 @@ public class Main {
     
                     }else if ( menu == 4){
                         System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
-                        System.out.println("Tiempo de reservacion");
+                        System.out.println("Estado de reservacion");
                         System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
                         System.out.println();
+                        if (reserva != null) {
+                            // El estudiante solo consulta. Tu método se encarga de decirle si sigue activa o si se le canceló en ese instante
+                            reserva.verificarExcesoReserva(); 
+                        } else {
+                            System.out.println("Usted no cuenta con ninguna reserva activa en este momento.");
+                        }
+                        sc.nextLine();
+
 
                     }else if (menu == 5){
                         System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
-                        System.out.println("Reporte o comentario sobre el servicio");
+                        System.out.println("Queja o comentario sobre servicio");
                         System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
-                        System.out.print("Escribe tu comentario: ");
-                        sc.nextLine();
-                        String mensaje = sc.nextLine();
-                        
-                        //Se crea un comentario
-                        Comment comentario = new Comment(mensaje, estudiante);
-                        //Se agrega a la lista de comentarios
-                        listaComentarios.add(comentario);
-                        //Preservar los datos de la lista en el archivo
                         System.out.println();
 
                     }else{
@@ -431,4 +452,72 @@ public class Main {
         
     }
 
+    //funcion para verificar que la estacion se encuentre en el rango correcto
+    public static int seleccionDeEstacion(Scanner sc, String mensaje){
+        int num_estacion = 0;
+        do{
+            System.out.println("Estaciones: ");
+            System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
+            System.out.println("1. Calle 53");
+            System.out.println("2. CYT");
+            System.out.println("3. Uriel");
+            System.out.println("4. Calle 45");
+            System.out.println("5. Calle 26");
+            System.out.println("6. Calle 30");
+            System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
+            num_estacion = verifExcepcion(sc, mensaje );
+                if(num_estacion > 6 || num_estacion < 1){
+                    System.out.println("Esta estacion no existe. Ingrese de nuevo estacion correcta");
+                }
+            }while(num_estacion > 6 || num_estacion < 1);
+            return num_estacion;
+    }
+
+    //funcion para verificar que ID  de cicla es de tres digitos
+    public static int idCicla(Scanner sc, String mensaje){
+        boolean verifID = false;
+        int id;
+        do{
+            id = verifExcepcion(sc, mensaje);
+            String idString = Integer.toString(id);
+            if(idString.length() == 3 ){
+                id = Integer.parseInt(idString);
+                verifID = true;
+            }else{
+                System.out.println("ID incorrecto. Ingreeselo de nuevo");
+            }
+        }while(! verifID );
+        return id;
+    }
+
+    //funcion para  recorrer lista de estudiantes y activar o finalizar el uso
+    public static void recorreListaEstudiantes(Scanner sc, int operacion, ArrayList<Student> listaEstudiante){
+        boolean verifStud = false;
+        long tiun;
+        do{ 
+            if(listaEstudiante.isEmpty()){
+            System.out.println("No hay estudiantes registrados.");
+            verifStud = true;
+            }else{
+                System.out.print("Ingrese tiun que desea buscar: ");
+                tiun = sc.nextInt();
+                sc.nextLine();
+                
+                for (Student student : listaEstudiante) {
+                    if (student.getTiun() == tiun) {
+                        if(operacion == 1){
+                            student.activacionDeUso();
+                            verifStud = true;
+                        }else if (operacion == 2){
+                            student.finalizacionDeUso();
+                            verifStud = true;
+                        }   
+                    }
+                }
+                if(!verifStud){
+                    System.out.println("Ese TIUN no pertenece a ningún estudiante registrado.");
+                }   
+            }
+        }while(!verifStud);
+    }
 }
