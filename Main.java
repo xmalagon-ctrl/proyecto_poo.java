@@ -77,7 +77,6 @@ public class Main {
                         System.out.println("3. Reglas");
                         System.out.println("3. Ver reportes");
                         System.out.println("5. Quitar a acceso a estudiante");
-                        System.out.println("6. Ver Buzón");
                         System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
                         menu = verifExcepcion(sc, "Ingrese el numero de lo que desea hacer: ");
 
