@@ -39,6 +39,20 @@ public class Administrator extends User{
         System.out.println("Ese TIUN no pertenece a ningún estudiante registrado.");
         return false;
     }
+    
+public boolean removeStudent(ArrayList<Student> listaEstudiante, long tiun){
+        
+        for(int i = 0; i < listaEstudiante.size(); i++){  
+             if(listaEstudiante.get(i).getTiun() == tiun){
+             listaEstudiante.remove(i);
+             return true;
+             }
+        }
+        return false;
+    }
+
+    
+}
 
 
    //addBicycle(), viewReports(), removeStudent()*/
