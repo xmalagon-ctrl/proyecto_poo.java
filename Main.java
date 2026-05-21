@@ -143,6 +143,105 @@ public class Main {
                             System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
                             System.out.println("Ver reportes");
                             System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
+                         int option = 0;
+                            do{
+                            System.out.println("1. Estado de las bicicletas");
+                            System.out.println("2. Reportes o comentarios de los estudiantes");
+                            System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
+                            option = verifExcepcion(sc,"Ingrese la opción a la cual desea acceder: ");
+                            System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
+                            sc.nextLine();
+                            switch(option){
+
+                                case 1:{
+                                    //Estado de las bicicletas
+                                    System.out.println("Estaciones: ");
+                                    System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
+                                    System.out.println("1. Calle 53");
+                                    System.out.println("2. CYT");
+                                    System.out.println("3. Uriel");
+                                    System.out.println("4. Calle 45");
+                                    System.out.println("5. Calle 26");
+                                    System.out.println("6. Calle 30");
+                                    System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
+
+                                    num_estacion = verifExcepcion(sc,"Ingrese la estación deseada: ");
+                                    sc.nextLine();
+                                    // Se llama al método que imprime la información de las biciletas 
+                                    estaciones.get(num_estacion - 1).infoBicicletasGeneral();
+                                    System.out.println("¿Desea cambiar el estado de una bicicleta? si/no");
+                                    opcionMenu = sc.nextLine().toLowerCase();
+
+                             if(opcionMenu.equals("si")){
+                                 System.out.print("Ingrese el ID de la bicicleta: ");
+                                 id = sc.nextInt();
+                                 sc.nextLine();
+                                 System.out.print("Escriba el estado (disponible/mantenimiento): ");
+                                 String stateBike = sc.nextLine().toLowerCase();
+                                 boolean estadoActualizado = estaciones.get(num_estacion - 1).cambiarEstadoBici(id, stateBike);
+                                 if(estadoActualizado){
+                                     System.out.println("Estado actualizado.");
+                                 }else{
+                                     System.out.println("No fue posible actualizar el estado.");
+                                 }
+                             }else if(!opcionMenu.equals("no")){
+                                 mensajeError();
+                             }
+                                    break;
+                                }
+
+                                case 2:{
+                                    //Reportes o comentarios de los estudiantes
+                                    if(listaComentarios.isEmpty()){
+                                        System.out.println("No hay comentarios registrados.");
+                                    }else{
+                                    //Imprime los comentarios 
+                                        for(Comment comentario : listaComentarios){
+                                        comentario.verComentario();
+                                        }
+                                    }
+                                    break;
+                                }
+                                default:{
+                                    mensajeError();
+                                }
+
+                            }
+
+                        }while(option==0 || option<1 || option>2);
+
+                        System.out.println();
+
+                        }else if (menu == 5){
+                            System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
+                            System.out.println("Quitar a acceso a estudiante");
+                            System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
+                            tiun = verifExcepcion(sc, "Ingrese el Tiun del estudiante que desea remover");
+                            if(adminsAutorizados.get(posicionAdministrador).removeStudent(listaEstudiante, tiun)){
+                                System.out.println("El estudiante fue removido exitosamente");
+                            }else{
+                                System.out.println("El TIUN no pertenece a ningún estudiante registrado.");
+                            }
+                            System.out.println();
+
+                    
+                        }else{
+                            mensajeError();
+                        }
+                        do{
+                            System.out.print("Desea volver al menu principal? (si/no); ");
+                            opcionMenu = sc.nextLine().toLowerCase();
+                            if (opcionMenu.equals("no")){
+                                System.out.println("Gracias por usar el aplicativo.");
+                            }else{
+                                mensajeError();
+                            }
+                        }while(!opcionMenu.equals("no") && !opcionMenu.equals("si"));
+
+                    }while (menu > 5 || menu < 0 || opcionMenu.equals("si"));
+
+                }
+    
                             System.out.println();
 
                         }else if (menu == 5){
@@ -158,13 +257,6 @@ public class Main {
                             }
                             System.out.println();
 
-                        }else if (menu == 6){
-                            System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
-                            System.out.println("Ver Buzón");
-                            System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
-                            for(Comment comentario : listaComentarios){
-                                comentario.verComentario();
-                            }
                         }else{
                             mensajeError();
                         }
