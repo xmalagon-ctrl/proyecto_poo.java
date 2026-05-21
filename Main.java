@@ -13,6 +13,7 @@ public class Main {
         Student estudiante, est_admi;
         ArrayList<Student> listaEstudiante = new ArrayList<>();
         ArrayList<Administrator> listaAdministrador = new ArrayList<>();
+        ArrayList<Comment> listaComentarios = new ArrayList<>();
         var estaciones = new ArrayList<Station>(); //lista de estaciones
         //Estación 1: Calle 53
         estaciones.add(new Station("Calle 53",15));
@@ -76,6 +77,7 @@ public class Main {
                         System.out.println("3. Reglas");
                         System.out.println("3. Ver reportes");
                         System.out.println("5. Quitar a acceso a estudiante");
+                        System.out.println("6. Ver Buzón");
                         System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
                         menu = verifExcepcion(sc, "Ingrese el numero de lo que desea hacer: ");
 
@@ -147,8 +149,22 @@ public class Main {
                             System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
                             System.out.println("Quitar a acceso a estudiante");
                             System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
+                            
+                            tiun = verifExcepcion(sc, "Ingrese el Tiun del estudiante que desea remover");
+                            if(adminsAutorizados.get(posicionAdministrador).removeStudent(listaEstudiante, tiun)){
+                                System.out.println("El estudiante fue removido exitosamente");
+                            }else{
+                                System.out.println("El TIUN no pertenece a ningún estudiante registrado.");
+                            }
                             System.out.println();
 
+                        }else if (menu == 6){
+                            System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
+                            System.out.println("Ver Buzón");
+                            System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
+                            for(Comment comentario : listaComentarios){
+                                comentario.verComentario();
+                            }
                         }else{
                             mensajeError();
                         }
@@ -205,7 +221,7 @@ public class Main {
                     System.out.println("2. Estado de la cuenta");
                     System.out.println("3. Reglas");
                     System.out.println("3. Tiempo de reservacion");
-                    System.out.println("5. Queja o comentario sobre servicio");
+                    System.out.println("5. Reporte o comentario sobre el servicio");
                     System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
                     menu = verifExcepcion(sc, "Ingrese el numero de lo que desea hacer: ");
 
@@ -290,8 +306,17 @@ public class Main {
 
                     }else if (menu == 5){
                         System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
-                        System.out.println("Queja o comentario sobre servicio");
+                        System.out.println("Reporte o comentario sobre el servicio");
                         System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
+                        System.out.print("Escribe tu comentario: ");
+                        sc.nextLine();
+                        String mensaje = sc.nextLine();
+                        
+                        //Se crea un comentario
+                        Comment comentario = new Comment(mensaje, estudiante);
+                        //Se agrega a la lista de comentarios
+                        listaComentarios.add(comentario);
+                        //Preservar los datos de la lista en el archivo
                         System.out.println();
 
                     }else{
