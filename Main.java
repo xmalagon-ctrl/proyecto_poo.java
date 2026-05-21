@@ -396,6 +396,15 @@ public class Main {
                         System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
                         System.out.println("Queja o comentario sobre servicio");
                         System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
+                        System.out.print("Escribe tu comentario: ");
+                        sc.nextLine();
+                        String mensaje = sc.nextLine();
+                        
+                        //Se crea un comentario
+                        Comment comentario = new Comment(mensaje, estudiante);
+                        //Se agrega a la lista de comentarios
+                        listaComentarios.add(comentario);
+                        //Preservar los datos de la lista en el archivo
                         System.out.println();
 
                     }else{
