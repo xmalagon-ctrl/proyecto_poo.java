@@ -12,25 +12,30 @@ public class Station {
         this.maxBicicletas = maxBicicletas;
     }
 
+     //get
+    public String getName_station() {
+        return name_station;
+    }
+    
+    public int getMaxBicicletas() {
+        return maxBicicletas;
+    }
+
+    public ArrayList<Bike> getBicis() {
+        return bicis;
+    }
+
+
+
     //metodos
-    public boolean agregarBicicleta(Bike bicicleta){ //editar para que se pueda agregar la cicla asi supere el limite, pero genera alertas al administrador para que mueva las ciclas fisicamente y regule de nuevo 
-        if (bicis.size() <= maxBicicletas){
-            bicis.add(bicicleta);
-            System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
-            System.out.println("Se agrego la cicla correctamente");
-            System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
-            return true;
-        }
-        System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
-        System.out.println("La estación ya se encuentra en su limite");
-        System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
-        return false;
+    public void agregarBicicleta(Bike bicicleta){      
+        bicis.add(bicicleta);
+        System.out.println("Se agrego la cicla correctamente");         
     }
 
     public boolean aquiEstaBicicleta (Bike bicicleta){
         for (Bike bike : bicis) {
             if (bike.getId() == bicicleta.getId()){
-            System.out.println("La bicicleta" + bicicleta.getId() + "se encuentra en esta estacion" + name_station);
             return true;
             }
         }
@@ -38,17 +43,19 @@ public class Station {
         return false;
     }
             
-    public boolean retirarBicicleta(Bike bicicleta){
+    public void retirarBicicleta(Bike bicicleta){
         for (Bike bike : bicis) {
             if (bike.getId() == bicicleta.getId()){
-            bicis.remove(bicicleta);
-            System.out.println("Se removio con exito la bicicleta " + bicicleta.getId());
-            return true;  
+                bicis.remove(bicicleta);
+                System.out.println("Se removio con exito la bicicleta " + bicicleta.getId());
+                break;
+          //  return true;   activarlo y poner el metodo boolean si se necesita
             }
         }
         System.out.println("No se encuentra esta bicicleta en esta estacion " + name_station);
-        return false;
+        //return false;  activarlo y poner el metodo boolean si se necesita
     }
+
     public boolean alertaMaxBicicleta (){
         if (bicis.size() >= maxBicicletas){
             return true;
@@ -62,6 +69,7 @@ public class Station {
         System.out.println("Cantidad de bicicletas: " + bicis.size());
         
     }
+
     public void infoBicicletasGeneral(){  //Muestra todas las ciclas que estan en esa estacion, ya sea que esten disponibles o en mantenimiento
         System.out.println("Nombre de la estación: " + name_station);
         for (Bike bike : bicis) {
@@ -75,18 +83,5 @@ public class Station {
              .filter(bike -> bike.getState().equals("disponible"))
              .forEach(bike -> System.out.println("*" + bike.getId() + " Se encuentra: " + bike.getState()));
     }
-
-
-    //get
-    public String getName_station() {
-        return name_station;
-    }
-    
-    public int getMaxBicicletas() {
-        return maxBicicletas;
-    }
-
-    public ArrayList<Bike> getBicis() {
-        return bicis;
-    }
       
+}
