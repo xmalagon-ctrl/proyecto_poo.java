@@ -8,7 +8,6 @@ public class Reservar {
     private LocalDateTime tiempoInicioUso, tiempoFinalUso, tiempoInicioReserva; //toam el tiempo con hora y fecha actual
     private String estadoReserva;
     private Student estudiante;
-    private boolean verif = false;
 
     public Reservar( Bike bicicletaReservada, Student estudiante) {
         this.bicicletaReservada = bicicletaReservada;
@@ -32,7 +31,7 @@ public class Reservar {
     public double getTiempoUsoMax() {
         return tiempoUsoMAx;
     }   
-    public String getEstadoReserva() { //este se llamara en estado de reserva en estudiante
+    public String getEstadoReserva() { 
         return estadoReserva;
     }
     public Student getEstudiante() {
@@ -41,7 +40,7 @@ public class Reservar {
 
     //set
     public boolean setEstacionEntrega(Station estacionEntrega) {
-        if (estacionEntrega != null && verificarBicicletaEstacion()) {
+        if (estacionEntrega != null && !(estacionEntrega.alertaMaxBicicleta()) ) {
             this.estacionEntrega = estacionEntrega;
             return true;
         } else {
@@ -73,6 +72,9 @@ public class Reservar {
         if (bicicletaReservada.reservar()) { //este se activara si la cicla se encuentra disponible 
             estadoReserva = "reservada";
             estudiante.asignarBicicleta(bicicletaReservada);
+            estudiante.setReserva(this);
+            bicicletaReservada.reservar();
+            estacionRecogida.retirarBicicleta(bicicletaReservada);
             System.out.println("Reserva realizada con éxito.");
             tiempoInicioReserva = LocalDateTime.now();
             return true;
@@ -88,6 +90,7 @@ public class Reservar {
             estadoReserva = "cancelada";
             estudiante.devolverBicicleta(bicicletaReservada);
             bicicletaReservada.desReservar();
+            estacionRecogida.agregarBicicleta(bicicletaReservada);
             System.out.println("Reserva cancelada.");
         } else {
             System.out.println("No hay una reserva activa para cancelar.");
@@ -96,52 +99,44 @@ public class Reservar {
 
 
 
-    public boolean activacionUso(){ //este lo activaria el administrador cuando el estudiante llegue fisicamente a retirar la reserva 
-        verif = estacionRecogida.retirarBicicleta(bicicletaReservada);
-        if(verif){   //se activara si la bicicleta esta en la estacion
-            tiempoInicioUso = LocalDateTime.now();
-            estadoReserva = "en_uso";
-            System.out.println("Uso activado con exito.");
-            return true;
-        }else{
-            System.out.println("No se pudo activacion del uso de esta bicicleta. \nIntenta de nuevo");
-            return false;
-        }
-    }
-
-    public boolean finalizarUso(){//este lo finalizaria el administrador
-        verif = estacionEntrega.agregarBicicleta(bicicletaReservada);
-        if(verif){   //se activara si la bicicleta se guardo correctamente a la estacion de entregra
-            tiempoFinalUso = LocalDateTime.now();
-            bicicletaReservada.desReservar();
-            estudiante.devolverBicicleta(bicicletaReservada);
-            estadoReserva = "finalizado";
-            System.out.println("Se finaliza el uso con exito.");
-            calcularPenalizacionUso();
-            return true;
-        }else{
-            estadoReserva = "cancelada";
-            System.out.println("No se pudo guardar correctamente la bicicleta en la estacion. \nIntenta de nuevo ");
-            return false;
-        }
-    }
-
-    public boolean verificarBicicletaEstacion() {
-        if(estacionRecogida.aquiEstaBicicleta(bicicletaReservada)) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    public boolean verificarExcesoReserva(){//va a poner la cicla de nuevo disponible si se pasa del tiempo de reserva
-        //validacion previa de que si cuente con una reserva
+    public void activacionUso(){ //este lo activaria el administrador cuando el estudiante llegue fisicamente a retirar la reserva 
+         //validacion previa de que si cuente con una reserva
         if (estadoReserva == null || !estadoReserva.equals("reservada")) {
-        System.out.println("No hay ninguna reserva activa por verificar.");
-        return false; 
+        System.out.println("No hay ninguna reserva activa para poder activar el uso.");
+        }else{
+            boolean expiro = verificarExcesoReserva();
+            if (!expiro) {
+                // Si NO expiró, el administrador puede proceder a activar el uso de la bicicleta de forma segura
+                tiempoInicioUso = LocalDateTime.now();
+                estadoReserva = "en_uso";
+                System.out.println("Uso activado con exito, para el estudiante " + estudiante.getUserName());
+            // return true;activarlo y poner el metodo boolean si se necesita
+        
+            } else {
+                System.out.println("Acceso denegado: El estudiante tardó más de 20 minutos en llegar atomar el servicio.");
+                //return false; activarlo y poner el metodo boolean si se necesita
+            } 
         }
+          
+        
+    }
+
+    public void finalizarUso(){//este lo finalizaria el administrador
+        
+        estacionEntrega.agregarBicicleta(bicicletaReservada);
+        tiempoFinalUso = LocalDateTime.now();
+        bicicletaReservada.desReservar();
+        estudiante.devolverBicicleta(bicicletaReservada);
+        estadoReserva = "finalizado";
+        System.out.println("Se finaliza el uso con exito, para el estudiante " + estudiante.getUserName());
+        calcularPenalizacionUso();   
+    }
+
+
+    //ESTA OPCION SE PODRA VER ANTES DE QUE EL ADMINISTRADOR LE DE ACTIVAR A USO Y EN EL MENU DE ESTUDIANTE EN ESTADO DE RESERVA
+    public boolean verificarExcesoReserva(){//va a poner la cicla de nuevo disponible si se pasa del tiempo de reserva
         //y si cuenta valida si se pasa o no del tiempo MAX de reserva (20min)
-        if((Duration.between(tiempoInicioReserva, LocalDateTime.now()).toMinutes()) > tiempoReservaMax){//ESTA OPCION SE PODRA VER ANTES DE QUE EL ADMINISTRADOR LE DE ACTIVAR A USO Y EN EL MENU DE ESTUDIANTE EN ESTADO DE RESERVA
+        if((Duration.between(tiempoInicioReserva, LocalDateTime.now()).toMinutes()) > tiempoReservaMax){
             estadoReserva = "cancelada";
             estudiante.devolverBicicleta(bicicletaReservada);
             bicicletaReservada.desReservar();
