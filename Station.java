@@ -83,5 +83,15 @@ public class Station {
              .filter(bike -> bike.getState().equals("disponible"))
              .forEach(bike -> System.out.println("*" + bike.getId() + " Se encuentra: " + bike.getState()));
     }
+
+    public boolean cambiarEstadoBici(int id, String newState){
+    for(Bike bike : bicis){
+        if(bike.getId() == id){
+            return bike.cambiarEstado(newState);
+        }
+    }
+    System.out.println("No existe bicicleta con ese ID.");
+    return false;
+}
       
 }
