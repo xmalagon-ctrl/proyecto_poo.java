@@ -1,6 +1,7 @@
  //clase hija  de madre para estudiante
 
 import java.time.LocalDateTime; // Para capturar la fecha y hora exacta
+import java.time.Duration;      // Para calcular la diferencia de tiempo entre dos momentos
 
 
 public class Student extends User {
@@ -103,6 +104,38 @@ public class Student extends User {
         }/*else {
             System.out.println("Este estudiante no tiene un uso de bicicleta activo.");
         }*/
+    }
+
+    public void estadoPenalizacion(){
+        
+        // VERIFICACIAR SI SE ENCUENTRA CONUNA PENALIZACION O SI NO
+        if (this.getState() != null && this.getState().equals("bloqueado")) {
+            LocalDateTime ahora = LocalDateTime.now();
+            LocalDateTime finCastigo = this.getFechaFinPenalizacion();
+
+            //VERIFIACAR SI LA EL BLOQUEO SIGUE ACTUALMENTE
+            if (finCastigo != null && ahora.isBefore(finCastigo)) {
+                Duration tiempoRestante = Duration.between(ahora, finCastigo);
+                
+                long dias = tiempoRestante.toDays();
+                long horas = tiempoRestante.toHoursPart();
+                long minutos = tiempoRestante.toMinutesPart();
+
+                System.out.println("Cuenta regresiva de tu sanción: "
+                        + dias + " días, "
+                        + horas + " horas y "
+                        + minutos + " minutos.");
+            } else {
+                // El tiempo ya paso se desbloque automaticamente
+                this.setState("activo");
+                this.setFechaFinPenalizacion(null);
+                System.out.println("El estudiante: " + this.getUserName() + " ya se encuentra activo.");
+            }
+        } else {
+            // Si el estado es "activo" o null, significa que está limpio
+            System.out.println("El estudiante: " + this.getUserName() + " no se encuentra penalizado.");
+        }
+   
     }
   
 }
