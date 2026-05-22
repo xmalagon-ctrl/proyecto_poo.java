@@ -79,8 +79,7 @@ public class Main {
                         System.out.println("3. Reglas");
                         System.out.println("4. Ver reportes");
                         System.out.println("5. Quitar a acceso a estudiante");
-                        System.out.println("6. Activar el uso de una bicicleta");
-                        System.out.println("7. Desactivar el uso de una bicicleta");
+                        System.out.println("6. Activar o Desactivar el uso de una bicicleta");;
                         System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
                         menu = verifExcepcion(sc, "Ingrese el numero de lo que desea hacer: ");
 
@@ -219,28 +218,39 @@ public class Main {
                             }
 
                         }else if (menu == 6){
-                            System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
-                            System.out.println("Activar el uso de una bicicleta");
-                            System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
-                            System.out.println();
-                            if (reserva != null) {
-                            recorreListaEstudiantes(sc, 1, listaEstudiante); 
-                            } else {
-                                System.out.println("No hay reservas en este momento.");
-                            }
+                            int a_d_bicis;
+                            do {
+                                a_d_bicis =verifExcepcion(sc, "Selecciona 1 para activar uso y 2 para desactivar: ");
+                                if (a_d_bicis == 1){
+                                    System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
+                                    System.out.println("Activar el uso de una bicicleta");
+                                    System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
+                                    System.out.println();
+                                    if (reserva != null) {
+                                    recorreListaEstudiantes(sc, 1, listaEstudiante); 
+                                    } else {
+                                        System.out.println("No hay reservas en este momento.");
+                                    }
 
-                        }else if (menu == 7){
-                            System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
-                            System.out.println("Desactivar el uso de una bicicleta");
-                            System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
-                            System.out.println();
+                                }else if (a_d_bicis == 2){
+                                    System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
+                                    System.out.println("Desactivar el uso de una bicicleta");
+                                    System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
+                                    System.out.println();
 
-                            if (reserva != null) {
-                            recorreListaEstudiantes(sc, 2, listaEstudiante); 
-                            } else {
-                                System.out.println("No hay reservas en este momento.");
-                            }
-                
+                                    if (reserva != null) {
+                                    recorreListaEstudiantes(sc, 2, listaEstudiante); 
+                                    } else {
+                                        System.out.println("No hay reservas en este momento.");
+                                    }
+
+                                }else {
+                                    mensajeError();
+                                }
+                                
+                            } while (a_d_bicis > 2 || a_d_bicis < 1 );
+    
+                            sc.nextLine();
                         }else{
                             mensajeError();
                         }
@@ -254,7 +264,7 @@ public class Main {
                             }
                         }while(!opcionMenu.equals("no") && !opcionMenu.equals("si"));
 
-                    }while (menu > 7 || menu < 0 || opcionMenu.equals("si"));
+                    }while (menu > 6 || menu < 0 || opcionMenu.equals("si"));
 
                 }
                 
