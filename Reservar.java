@@ -166,31 +166,4 @@ public class Reservar {
         }   
     }
 
-    public void estadoDePenalizacion(){ //esto es para que lo observe el estudiante en estado de cuenta 
-
-        if (estudiante.getState().equals("bloqueado")){
-            LocalDateTime ahora = LocalDateTime.now();
-            LocalDateTime finCastigo = estudiante.getFechaFinPenalizacion();
-
-            if (ahora.isBefore(finCastigo)) {
-                Duration tiempoRestante = Duration.between(ahora, finCastigo);
-
-                long dias = tiempoRestante.toDays();
-                long horas = tiempoRestante.toHoursPart();     // Toma SOLO las horas sobrantes (0 a 23)
-                long minutos = tiempoRestante.toMinutesPart(); // Toma SOLO los minutos sobrantes (0 SAF 59)
-
-                System.out.println("Cuenta regresiva de tu sanción: " 
-                    + dias + " días, " 
-                    + horas + " horas y " 
-                    + minutos + " minutos.");
-            }else {
-                estudiante.setState("activo");
-                estudiante.setFechaFinPenalizacion(null);
-                System.out.println("El estudiante: " + estudiante.getUserName() + " ya se encuentra activo");
-            }
-        }else {
-            System.out.println("El estudiante: " + estudiante.getUserName() + " no se encuentra penalizado");
-        } 
-    }
-
 }
