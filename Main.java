@@ -156,15 +156,15 @@ public class Main {
                             System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
                             option = verifExcepcion(sc,"Ingrese la opción a la cual desea acceder: ");
                             System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
-                            sc.nextLine();
                             switch(option){
 
                                 case 1:{
                                     //Estado de las bicicletas
                                     num_estacion =seleccionDeEstacion(sc, "Ingrese la estación deseada: ");
+                                    sc.nextLine();
                                     // Se llama al método que imprime la información de las biciletas 
                                     estaciones.get(num_estacion - 1).infoBicicletasGeneral();
-                                    System.out.println("¿Desea cambiar el estado de una bicicleta? si/no");
+                                    System.out.print("¿Desea cambiar el estado de una bicicleta? si/no: ");
                                     opcionMenu = sc.nextLine().toLowerCase();
 
                                     if(opcionMenu.equals("si")){
@@ -195,6 +195,7 @@ public class Main {
                                                 comentario.verComentario();
                                                 }
                                             }
+                                            sc.nextLine();
                                             break;
                                         }
                                         default:{
@@ -259,34 +260,53 @@ public class Main {
                 
 
             }else if (admi_usu == 2){
+                boolean existenciaEstudiante = false;
+                estudiante = null;
                 do{
-                //Nombre del estudiante
-                System.out.print("Ingresa el nombre del estudiante: ");
-                nombre_st= sc.nextLine();
+                    //Nombre del estudiante
+                    System.out.print("Ingresa el nombre del estudiante: ");
+                    nombre_st= sc.nextLine();
 
-                //Numero C.C o T.I
-                cedulaEstudiante = verifExcepcion(sc, "Ingresa su C.C o T.I: ");
+                    //Numero C.C o T.I
+                    cedulaEstudiante = verifExcepcion(sc, "Ingresa su C.C o T.I: ");
 
-                //Numero tiun
-                tiun = verifExcepcion(sc, "Ingresa el Tiun de su carnet: ");
-                
-                //Clase estudiante
-                estudiante = new Student(nombre_st,cedulaEstudiante, tiun);
-                sc.nextLine();
-                verif_u = estudiante.setUserName(nombre_st);
-                verif_CC_TI = estudiante.setCedula(cedulaEstudiante);
-                verif_tiun = estudiante.setTiun(tiun);
+                    //Numero tiun
+                    tiun = verifExcepcion(sc, "Ingresa el Tiun de su carnet: ");
+                    for (Student student: listaEstudiante) {
+                        if(student.getCedula() == cedulaEstudiante && student.getTiun() == tiun && student.getUserName().equals(nombre_st)){
+                            estudiante = student;
+                            existenciaEstudiante = true;
+                            break;
+                        }else {
+                            existenciaEstudiante = false;
+                        }
+                    }
+                    if (existenciaEstudiante){
+                        verif_u = true;
+                        verif_CC_TI = true;
+                        verif_tiun = true;
+                    }else{
+                        //Clase estudiante
+                        estudiante = new Student(nombre_st,cedulaEstudiante, tiun);
+                        sc.nextLine();
+                        verif_u = estudiante.setUserName(nombre_st);
+                        verif_CC_TI = estudiante.setCedula(cedulaEstudiante);
+                        verif_tiun = estudiante.setTiun(tiun);
+                    }
+                    
     
                 }while(!verif_u || !verif_tiun || !verif_CC_TI);
 
-                //agregar estudiante a la lista de estudiantes
-                listaEstudiante.add(estudiante);
-                //metodos del historial ***********************************************************************************
-                        DocReader.crearArchivo("poo/archivoHistorial/estudianteReal.txt");
-                        DocReader.verificarDuplicados("poo/archivoHistorial/estudianteReal.txt", tiun);
-                        DocReader.contenidoArchivo("poo/archivoHistorial/estudianteReal.txt", nombre_st, tiun);
-                        DocReader.leerArchivo("poo/archivoHistorial/estudianteReal.txt");
-                //*-********************************************************************************************************
+                if (!existenciaEstudiante){
+                    //agregar estudiante a la lista de estudiantes
+                    listaEstudiante.add(estudiante);
+                    //metodos del historial ***********************************************************************************
+                            DocReader.crearArchivo("poo/archivoHistorial/estudianteReal.txt");
+                            DocReader.verificarDuplicados("poo/archivoHistorial/estudianteReal.txt", tiun);
+                            DocReader.contenidoArchivo("poo/archivoHistorial/estudianteReal.txt", nombre_st, tiun);
+                            DocReader.leerArchivo("poo/archivoHistorial/estudianteReal.txt");
+                    //*-********************************************************************************************************
+                }
                 do{
                     //Menu principal
                     System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
@@ -296,7 +316,7 @@ public class Main {
                     System.out.println("2. Estado de la cuenta");
                     System.out.println("3. Reglas");
                     System.out.println("4. Estado de reservacion");
-                    System.out.println("5. Queja o comentario sobre el servicio");
+                    System.out.println("5. Queja o comentario sobre servicio");
                     System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
                     menu = verifExcepcion(sc, "Ingrese el numero de lo que desea hacer: ");
 
@@ -364,12 +384,9 @@ public class Main {
                         System.out.println("Estado de la cuenta");
                         System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
                         System.out.println();
-                        if (reserva != null) {
-                            // El estudiante solo consulta. Tu método se encarga de decirle si sigue activa o si se le canceló en ese instante
-                            reserva.estadoDePenalizacion(); 
-                        } else {
-                            System.out.println("Usted no cuenta con ninguna reservacion previa, por ende no cuenta con penalizaciones.");
-                        }
+                       
+                        estudiante.estadoPenalizacion(); 
+                        
                         sc.nextLine();
 
                     }else if (menu == 3){
@@ -396,16 +413,17 @@ public class Main {
                         System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
                         System.out.println("Queja o comentario sobre servicio");
                         System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
+                        System.out.println();
                         System.out.print("Escribe tu comentario: ");
                         sc.nextLine();
                         String mensaje = sc.nextLine();
-                        
-                        //Se crea un comentario
+                         //Se crea un comentario
                         Comment comentario = new Comment(mensaje, estudiante);
                         //Se agrega a la lista de comentarios
                         listaComentarios.add(comentario);
                         //Preservar los datos de la lista en el archivo
                         System.out.println();
+
 
                     }else{
                         mensajeError();
