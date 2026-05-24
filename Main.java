@@ -423,6 +423,7 @@ public class Main {
                         System.out.println();
                        
                         estudiante.estadoPenalizacion(); 
+                        estudiante.verMotivosPenalizacion(listaComentariosAdmin);
                         
                         sc.nextLine();
 
