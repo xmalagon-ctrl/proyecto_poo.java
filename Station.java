@@ -93,4 +93,19 @@ public class Station {
         System.out.println("No existe bicicleta con ese ID.");
         return false;
     }
+
+    public static void alertaEstaciones(ArrayList<Station> estaciones){
+        boolean first = true;
+        for(Station estacion : estaciones){
+        if(estacion.alertaMaxBicicleta()){
+            if(first){
+            System.out.println("                      (ALERTA)                      ");
+            first = false;
+            }
+            System.out.println("La estación "+ estacion.getName_station() +" alcanzó el máximo de bicicletas.");
+            System.out.println();
+            }
+        }
+        System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
+    
 }
