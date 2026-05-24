@@ -98,6 +98,16 @@ public class Main {
                                     sc.nextLine();
                                     
                                     estadoCorrecto = adminsAutorizados.get(posicionAdministrador).penalizeStudent(listaEstudiante,tiun);
+                                    
+                                    System.out.print("¿Desea registrar el motivo de la penalización?(si/no): ");
+                                    String opcion = sc.nextLine().toLowerCase();
+
+                                    if(opcion.equals("si")){
+                                        System.out.print("Ingrese el motivo: ");
+                                        String motivo = sc.nextLine();
+                                        adminsAutorizados.get(posicionAdministrador).addMotivoPenalizacion(listaComentariosAdmin,tiun, motivo);
+
+                                    }
                                 }
                             }while(!estadoCorrecto);
                             sc.nextLine();
