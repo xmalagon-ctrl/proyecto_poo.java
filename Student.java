@@ -1,6 +1,7 @@
  //clase hija  de madre para estudiante
 
 import java.time.LocalDateTime; // Para capturar la fecha y hora exacta
+import java.util.ArrayList;
 import java.time.Duration;      // Para calcular la diferencia de tiempo entre dos momentos
 
 
@@ -93,17 +94,13 @@ public class Student extends User {
     public void activacionDeUso(){
         if (this.reserva != null) {
             reserva.activacionUso();
-        }/*else {
-            System.out.println("Este estudiante no tiene una reserva asignada en su cuenta.");
-        }*/
+        }
     }
 
     public void finalizacionDeUso(){
         if (this.reserva != null) {
             reserva.finalizarUso();
-        }/*else {
-            System.out.println("Este estudiante no tiene un uso de bicicleta activo.");
-        }*/
+        }
     }
 
     public void estadoPenalizacion(){
@@ -137,7 +134,23 @@ public class Student extends User {
         }
    
     }
- 
+
+    public void tiempoDeUso(){
+        //verificacion de que si cuente con la activacion del uso 
+        if((this.reserva != null)  && reserva.getEstadoReserva().equals("en_uso")){
+            if((Duration.between(reserva.getTiempoInicioUso(), LocalDateTime.now()).toMinutes()) > reserva.getTiempoUsoMax()){
+            System.out.println("Superate el tiempo de uso. Esto generara una penalización");
+            
+            }else{
+                System.out.println("Cuentas con un tiempo restante de uso de: " + (reserva.getTiempoUsoMax() - (Duration.between(reserva.getTiempoInicioUso(), LocalDateTime.now()).toMinutes())) + " minutos.");
+                
+            }
+
+        }else {
+            System.out.println("Usted no cuenta con ninguna activacion de uso de bicicleta en estos momentos");
+        }
+    }
+
      public void verMotivosPenalizacion(ArrayList <Comment> listaComentariosAdmin){
         
         boolean existe = false;
