@@ -63,13 +63,6 @@ public class Station {
         return false;
     }
 
-    public void infoEstacion(){
-        System.out.println("Nombre de la estación: " + name_station);
-        System.out.println("Maximo de biciletas: "+ maxBicicletas);
-        System.out.println("Cantidad de bicicletas: " + bicis.size());
-        
-    }
-
     public void infoBicicletasGeneral(){  //Muestra todas las ciclas que estan en esa estacion, ya sea que esten disponibles o en mantenimiento
         System.out.println("Nombre de la estación: " + name_station);
         for (Bike bike : bicis) {
@@ -93,7 +86,6 @@ public class Station {
         System.out.println("No existe bicicleta con ese ID.");
         return false;
     }
-
     public static void alertaEstaciones(ArrayList<Station> estaciones){
         boolean first = true;
         for(Station estacion : estaciones){
@@ -117,5 +109,4 @@ public class Station {
         }
         return false;
     }
-    
 }
