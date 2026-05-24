@@ -108,4 +108,14 @@ public class Station {
         }
         System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
     }
+    public boolean existeBicicleta(int id){
+
+        for(Bike bike : bicis){
+            if(bike.getId() == id){
+                return true;
+            }
+        }
+        return false;
+    }
+    
 }
