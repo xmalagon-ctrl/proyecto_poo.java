@@ -16,6 +16,14 @@ public class Comment{
             //Se asigna la fecha de manera automática
             this.fecha = LocalDateTime.now();
         }
+    //Constructor para el motivo de penalización manual realizada por el Administrador
+            public Comment(String mensaje, Administrator admin, long tiun ) {
+            this.mensaje = mensaje;
+            this.admin = admin;
+            this.tiun = tiun;
+            //Se asigna la fecha de manera automática
+            this.fecha = LocalDateTime.now();
+        }
 
     //Get
     public String getMensaje(){
