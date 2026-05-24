@@ -51,6 +51,14 @@ public boolean removeStudent(ArrayList<Student> listaEstudiante, long tiun){
         return false;
     }
 
+//método para registrar el motivo de la penalización
+public void addMotivoPenalizacion(ArrayList<Comment> listaComentariosAdmin, long tiun, String motivo){
+    
+    Comment comentario = new Comment(motivo, this, tiun);
+    listaComentariosAdmin.add(comentario);
+    System.out.println("Motivo registrado correctamente.");
+
+    }
     
 }
 
