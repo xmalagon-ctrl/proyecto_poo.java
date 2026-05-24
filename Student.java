@@ -137,6 +137,20 @@ public class Student extends User {
         }
    
     }
+ 
+     public void verMotivosPenalizacion(ArrayList <Comment> listaComentariosAdmin){
+        
+        boolean existe = false;
+        for(Comment comentario : listaComentariosAdmin){
+            if(comentario.getTiun() == this.getTiun()){
+                if(!existe){
+                System.out.println("Motivos de penalización:");
+                }
+                comentario.verComentario();
+                existe = true;
+            }
+        }
+    }
   
 }
 
