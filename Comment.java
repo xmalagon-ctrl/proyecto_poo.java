@@ -7,7 +7,8 @@ public class Comment{
     private String mensaje;
     private LocalDateTime fecha;
     private Student autor;
-
+    private Administrator admin;
+    private long tiun; 
     //Constructor
             public Comment(String mensaje, Student autor) {
             this.mensaje = mensaje;
@@ -26,6 +27,12 @@ public class Comment{
         public Student getAutor() {
         return autor;
     }
+    public Administrator getAdmin() {
+        return admin; 
+    }
+    public long getTiun(){
+        return tiun;
+    }
 
     //Set
     public void setMensaje(){
@@ -34,13 +41,19 @@ public class Comment{
 
     //Métodos
     public void verComentario() {
-
-    System.out.println("Autor: " + autor.getUserName());
-    System.out.println("TIUN: " + autor.getTiun());
-    System.out.println("Fecha: " + fecha);
-    System.out.println(mensaje);
-    System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
+    if(autor != null){
+        System.out.println("Autor: " + autor.getUserName());
+        System.out.println("TIUN: " + autor.getTiun());
+        System.out.println("Fecha: " + fecha);
+        System.out.println("Mensaje: " + mensaje);
+    }else{
+        System.out.println("Administrador: " + admin.getUserName());
+        System.out.println("Fecha: " + fecha);
+        System.out.println(" - "+ mensaje);
     }
+    System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
+
+}
 
 
 }
