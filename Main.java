@@ -16,6 +16,7 @@ public class Main {
         Reservar reserva = null;
         ArrayList<Student> listaEstudiante = new ArrayList<>();
         ArrayList<Comment> listaComentarios = new ArrayList<>();
+        ArrayList<Comment> listaComentariosAdmin = new ArrayList<>();
         var estaciones = new ArrayList<Station>(); //lista de estaciones
         //Estación 1: Calle 53
         estaciones.add(new Station("Calle 53",2));
@@ -106,21 +107,38 @@ public class Main {
                             System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
                             System.out.println("Agregar cicla");
                             System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
-                            do{
+                              System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
+                                        do{
                                 do{
                                     num_estacion = seleccionDeEstacion(sc, "Ingrese la estación deseada: ");
-                                    id = idCicla(sc, "Ingrese el ID de la bicicleta: ");
+                                    boolean existe;
+
+                                    do{
+                                        id = idCicla(sc, "Ingrese el ID de la bicicleta: ");
+                                        existe = false;
+                                        for(Station estacion : estaciones){
+                                            if(estacion.existeBicicleta(id)){
+                                                existe = true;
+                                                System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
+                                                System.out.println("El ID ya existe. Porfavor ingrese uno diferente");
+                                                System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
+                                                break;
+                                            }
+                                        }
+                                    }while(existe);
+
                                     //Se crea una nueva bicicleta
-                                    Bike newBike = new Bike (id, "disponible");
+                                    Bike newBike = new Bike(id, "disponible");
                                     //Se verifica la capacidad de la estacion y se agrega la bicicleta
                                     fueAgregada = estaciones.get(num_estacion-1).alertaMaxBicicleta();
-        
+
                                     if (!fueAgregada) {
                                         estaciones.get(num_estacion-1).agregarBicicleta(newBike);
-                
+                                        System.out.println("La cicla fue agregada correctamente.");
                                     }else{
                                         System.out.println("Agregue la cicla en otra estacion");
                                     }
+
                                 }while (fueAgregada);
                                 sc.nextLine();
                                 do{
@@ -128,7 +146,7 @@ public class Main {
                                     opcionMenu = sc.nextLine().toLowerCase();
                                     if (opcionMenu.equals("no")){
                                         System.out.println("Se agregaron las ciclas con exito.");
-                                    }else{
+                                    }else if(!opcionMenu.equals("si")){
                                         mensajeError();
                                     }
                                 }while(!opcionMenu.equals("no") && !opcionMenu.equals("si"));
