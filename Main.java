@@ -146,8 +146,7 @@ public class Main {
                             System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
                             System.out.println("Ver reportes");
                             System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
-                            System.out.println();
-                            
+                            Station.alertaEstaciones(estaciones);
                          int option = 0;
                             do{
                             System.out.println("1. Estado de las bicicletas");
