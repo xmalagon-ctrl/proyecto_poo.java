@@ -1,6 +1,6 @@
 package poo;
 import java.io.*;
-import java.nio.file.Files;
+
 
 public class DocReader {
        String nombre_st;
