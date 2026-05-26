@@ -1,4 +1,6 @@
+package poo;
 import java.io.*;
+import java.nio.file.Files;
 
 public class DocReader {
        String nombre_st;
@@ -72,45 +74,269 @@ public class DocReader {
         }
     }
 
-            public static void verificarDuplicados(String nombreArchivo, int tiun) {
+                public static void verificarDuplicados(String nombreArchivo, int tiun) {
 
-            File archivo = new File(nombreArchivo);
+                    File archivo = new File(nombreArchivo);
 
-            try {
+                    try {
 
-                BufferedReader openHistorial = new BufferedReader(new FileReader(archivo));
+                        BufferedReader openHistorial =
+                                new BufferedReader(new FileReader(archivo));
 
-                String lectura;
+                        String lectura;
 
-                dupli = false;
+                        dupli = false;
 
-                while ((lectura = openHistorial.readLine()) != null) {
+                        while ((lectura = openHistorial.readLine()) != null) {
 
-                                // ignorar líneas vacías
-                        if (lectura.trim().isEmpty()) {
-                            continue;
+                            // Ignorar líneas vacías
+                            if (lectura.trim().isEmpty()) {
+                                continue;
+                            }
+
+                            // Separar datos por coma
+                            String[] partes = lectura.split(",");
+
+                            // Verificar formato correcto
+                            if(partes.length < 3){
+                                continue;
+                            }
+
+                            // nombre, cedula, clave
+                            int identificacion = Integer.parseInt(partes[1]);
+
+                            if (tiun == identificacion) {
+
+                                System.out.println("Ya existe el user");
+
+                                dupli = true;
+
+                                break;
+                            }
                         }
-                    String[] partes = lectura.split(":");
 
-                    int identificacion = Integer.parseInt(partes[0]);
+                        openHistorial.close();
 
-                    if (tiun == identificacion) {
+                    } catch(FileNotFoundException ex) {
 
-                        System.out.println("Ya existe el user");
+                        ex.printStackTrace(System.out);
 
-                        dupli = true;
+                    } catch(IOException ex) {
 
-                        break;
+                        ex.printStackTrace(System.out);
+
+                    } catch(NumberFormatException ex){
+
+                        System.out.println("Error en formato del archivo.");
                     }
                 }
 
-                openHistorial.close();
+public static void guardarAdministrador(
+        String nombreArchivo,
+        String nombre,
+        int cedula,
+        int clave) {
 
-            } catch(FileNotFoundException ex) {
+    File archivo = new File(nombreArchivo);
+
+    try {
+
+        // Verifica máximo 5 administradores
+        BufferedReader br = new BufferedReader(new FileReader(archivo));
+
+        int contador = 0;
+
+        while(br.readLine() != null){
+            contador++;
+        }
+
+        br.close();
+
+        if(contador >= 5){
+            System.out.println("Ya existen 5 administradores.");
+            return;
+        }
+
+        PrintWriter pw = new PrintWriter(new FileWriter(archivo, true));
+
+        pw.println(nombre + "," + cedula + "," + clave);
+
+        pw.close();
+
+        System.out.println("Administrador guardado.");
+
+    } catch(IOException ex){
+        ex.printStackTrace(System.out);
+    }
+}
+
+          /* public static void editarClaveAdmi(String nombreArchivo, int clave, String nombre_Admi, int cedulaAdmi) {
+
+            File archivo = new File(nombreArchivo);
+            clave=0000;
+            int claveSave;
+
+
+            try {
+
+            BufferedReader openAdmi = new BufferedReader(new FileReader(archivo));
+                
+                 PrintWriter editClave = new PrintWriter(new FileWriter(archivo , true));
+           // PrintWriter salida2 = new PrintWriter(new FileWriter(tiun , true));
+            editClave.print(clave);
+            editClave.print(":"+nombre_Admi+"con la C.C:"+cedulaAdmi);
+
+
+                }
+
+             catch(FileNotFoundException ex) {
                 ex.printStackTrace(System.out);
 
             } catch(IOException ex) {
                 ex.printStackTrace(System.out);
             }
+        }*/
+
+public static boolean cambiarClaveAdministrador(
+        String nombreArchivo,
+        String nombreBuscar,
+        int cedulaBuscar,
+        int claveActual,
+        int nuevaClave) {
+
+    File archivo = new File(nombreArchivo);
+    File temporal = new File("temp.txt");
+
+    boolean cambioRealizado = false;
+
+    try {
+
+        BufferedReader br =
+                new BufferedReader(new FileReader(archivo));
+
+        PrintWriter pw =
+                new PrintWriter(new FileWriter(temporal));
+
+        String linea;
+
+        while((linea = br.readLine()) != null){
+
+            if(linea.trim().isEmpty()){
+                continue;
+            }
+
+            String[] datos = linea.split(",");
+
+            if(datos.length < 3){
+                pw.println(linea);
+                continue;
+            }
+
+            String nombre = datos[0].trim();
+
+            int cedula = Integer.parseInt(datos[1].trim());
+
+            int claveGuardada =
+                    Integer.parseInt(datos[2].trim());
+
+            // Verifica admin correcto
+            if(nombre.equalsIgnoreCase(nombreBuscar.trim())
+            && cedula == cedulaBuscar
+            && claveGuardada == claveActual){
+
+                // 🔥 ESCRIBE NUEVA CLAVE
+                pw.println(
+                        nombre + "," +
+                        cedula + "," +
+                        nuevaClave
+                );
+
+                cambioRealizado = true;
+
+            }else{
+
+                // Mantiene la línea original
+                pw.println(linea);
+            }
         }
+
+        br.close();
+        pw.close();
+
+        // 🔥 REEMPLAZAR ARCHIVO ORIGINAL
+        if(archivo.delete()){
+
+            temporal.renameTo(archivo);
+
+        }else{
+
+            System.out.println("No se pudo actualizar el archivo.");
+        }
+
+    } catch(Exception e){
+
+        e.printStackTrace(System.out);
+    }
+
+    return cambioRealizado;
+}   
+        public static boolean verificarClaveAdministrador(
+        String nombreArchivo,
+        String nombreBuscar,
+        int cedulaBuscar,
+        int claveAdmi) {
+
+    File archivo = new File(nombreArchivo);
+
+    try {
+
+        BufferedReader br =
+                new BufferedReader(new FileReader(archivo));
+
+        String linea;
+
+        while((linea = br.readLine()) != null){
+
+            // Ignorar líneas vacías
+            if(linea.trim().isEmpty()){
+                continue;
+            }
+
+            String[] datos = linea.split(",");
+
+            // Verificar formato correcto
+            if(datos.length < 3){
+                continue;
+            }
+
+            String nombre = datos[0];
+
+            int cedula = Integer.parseInt(datos[1]);
+
+            int claveGuardada = Integer.parseInt(datos[2]);
+
+            // Comparar datos
+            if(nombre.trim().equalsIgnoreCase(nombreBuscar.trim())
+            && cedula == cedulaBuscar
+            && claveGuardada == claveAdmi){
+
+                br.close();
+
+                return true;
+            }
+        }
+
+        br.close();
+
+    } catch(IOException ex){
+
+        ex.printStackTrace(System.out);
+
+    } catch(NumberFormatException ex){
+
+        System.out.println("Error en formato del archivo.");
+    }
+
+    return false;
+}
 }
