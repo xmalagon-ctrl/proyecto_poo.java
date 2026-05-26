@@ -170,33 +170,6 @@ public static void guardarAdministrador(
     }
 }
 
-          /* public static void editarClaveAdmi(String nombreArchivo, int clave, String nombre_Admi, int cedulaAdmi) {
-
-            File archivo = new File(nombreArchivo);
-            clave=0000;
-            int claveSave;
-
-
-            try {
-
-            BufferedReader openAdmi = new BufferedReader(new FileReader(archivo));
-                
-                 PrintWriter editClave = new PrintWriter(new FileWriter(archivo , true));
-           // PrintWriter salida2 = new PrintWriter(new FileWriter(tiun , true));
-            editClave.print(clave);
-            editClave.print(":"+nombre_Admi+"con la C.C:"+cedulaAdmi);
-
-
-                }
-
-             catch(FileNotFoundException ex) {
-                ex.printStackTrace(System.out);
-
-            } catch(IOException ex) {
-                ex.printStackTrace(System.out);
-            }
-        }*/
-
 public static boolean cambiarClaveAdministrador(
         String nombreArchivo,
         String nombreBuscar,
@@ -263,7 +236,7 @@ public static boolean cambiarClaveAdministrador(
         br.close();
         pw.close();
 
-        // 🔥 REEMPLAZAR ARCHIVO ORIGINAL
+        // REEMPLAZAR ARCHIVO ORIGINAL
         if(archivo.delete()){
 
             temporal.renameTo(archivo);
