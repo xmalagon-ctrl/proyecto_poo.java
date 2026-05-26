@@ -70,6 +70,90 @@ public class Main {
                     System.out.println("No eres administrador autorizado");
                     opcionMenu = "no";
                 }else{
+                    System.out.println("- - - CAMBIO DE CLAVE ADMINISTRADOR - - -");
+
+int intentos = 0;
+boolean claveCorrecta = false;
+
+// 🔥 DECLARAR FUERA DEL WHILE
+int claveIngresada = 0;
+
+while(intentos < 3 && !claveCorrecta){
+
+    System.out.print("Ingrese clave actual: ");
+    claveIngresada = sc.nextInt();
+
+    claveCorrecta =
+            DocReader.verificarClaveAdministrador(
+                    "poo/archivoHistorial/Administradores.txt",
+                    nombre_admi,
+                    cedulaAdmi,
+                    claveIngresada
+            );
+
+    if(!claveCorrecta){
+
+        intentos++;
+
+        System.out.println(
+                "Clave incorrecta. Intento "
+                + intentos +
+                " de 3."
+        );
+    }
+}
+
+if(claveCorrecta){
+
+    System.out.print(
+            "Desea cambiar la contraseña? (si/no): "
+    );
+
+    sc.nextLine();
+
+    String opcion = sc.nextLine().toLowerCase();
+
+    if(opcion.equals("si")){
+
+        System.out.print("Ingrese nueva clave: ");
+
+        int nuevaClave = sc.nextInt();
+
+        boolean cambio =
+                DocReader.cambiarClaveAdministrador(
+                        "poo/archivoHistorial/Administradores.txt",
+                        nombre_admi,
+                        cedulaAdmi,
+                        claveIngresada,
+                        nuevaClave
+                );
+
+        if(cambio){
+
+            System.out.println(
+                    "Clave cambiada correctamente."
+            );
+
+        }else{
+
+            System.out.println(
+                    "No se pudo cambiar la clave."
+            );
+        }
+
+    }else{
+
+        System.out.println(
+                "No se realizó ningún cambio."
+        );
+    }
+
+}else{
+
+    System.out.println(
+            "Acceso bloqueado."
+    );
+}
                     do{
                         //Menu principal
                         System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
