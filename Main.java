@@ -418,16 +418,20 @@ if(claveCorrecta){
                     
     
                 }while(!verif_u || !verif_tiun || !verif_CC_TI);
+//agregar estudiante a la lista de estudiantes
+DocReader.crearArchivo("poo/archivoHistorial/estudianteReal.txt");
+    boolean existe =DocReader.verificarDuplicados("poo/archivoHistorial/estudianteReal.txt",tiun);
 
-                if (!existenciaEstudiante){
-                    //agregar estudiante a la lista de estudiantes
-                    listaEstudiante.add(estudiante);
+if(!existe){
+    listaEstudiante.add(estudiante);
 
-                    //metodos del historial ***********************************************************************************
-                            DocReader.crearArchivo("poo/archivoHistorial/estudianteReal.txt");
-                            DocReader.verificarDuplicados("poo/archivoHistorial/estudianteReal.txt", tiun);
-                            DocReader.contenidoArchivo("poo/archivoHistorial/estudianteReal.txt", nombre_st, tiun);
-                            DocReader.leerArchivo("poo/archivoHistorial/estudianteReal.txt");
+    DocReader.contenidoArchivo("poo/archivoHistorial/estudianteReal.txt",nombre_st,tiun);
+
+}else{
+    System.out.println("El estudiante ya está registrado.");
+}
+
+DocReader.leerArchivo("poo/archivoHistorial/estudianteReal.txt");
                     //*-********************************************************************************************************
                 }
                 
