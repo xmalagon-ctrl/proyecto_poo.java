@@ -1,10 +1,10 @@
-
+package poo;
 import java.io.*;
-
+import java.util.ArrayList;
 
 public class DocReader {
        String nombre_st;
-        public static boolean dupli= false;
+      //  public static boolean dupli= false;
        int tiun;
         //constructor
 
@@ -27,32 +27,30 @@ public class DocReader {
     }
 }
 
-        public static void contenidoArchivo(String nombreArchivo, String nombre_st,  int tiun) {
+     
+public static void contenidoArchivo(
+        String nombreArchivo,
+        String nombre_st,
+        int tiun) {
 
-        File archivo = new File(nombreArchivo);
+    File archivo = new File(nombreArchivo);
 
-        try {
-           if(dupli!=true){
-            PrintWriter salida = new PrintWriter(new FileWriter(archivo , true));
-           // PrintWriter salida2 = new PrintWriter(new FileWriter(tiun , true));
-            salida.print(tiun);
-            salida.println(":"+nombre_st);
-              
-             
-             
-              
-              
-            salida.close();
-          
+    try {
 
-            System.out.println("Se actualizo el historial");
-           }
-        } catch(FileNotFoundException ex) {
-            ex.printStackTrace(System.out);
-        } catch(IOException ex){
-            ex.printStackTrace(System.out);
-        }
+        PrintWriter salida =
+                new PrintWriter(new FileWriter(archivo , true));
+
+        salida.println(tiun + ":" + nombre_st);
+
+        salida.close();
+
+        System.out.println("Se actualizó el historial");
+
+    } catch(IOException ex){
+
+        ex.printStackTrace(System.out);
     }
+}
 
         public static void leerArchivo(String nombreArchivo) {
 
@@ -74,62 +72,53 @@ public class DocReader {
         }
     }
 
-                public static void verificarDuplicados(String nombreArchivo, int tiun) {
+       
 
-                    File archivo = new File(nombreArchivo);
+public static boolean verificarDuplicados(
+        String nombreArchivo,
+        int tiun) {
 
-                    try {
+    File archivo = new File(nombreArchivo);
 
-                        BufferedReader openHistorial =
-                                new BufferedReader(new FileReader(archivo));
+    try {
 
-                        String lectura;
+        BufferedReader br =
+                new BufferedReader(new FileReader(archivo));
 
-                        dupli = false;
+        String linea;
 
-                        while ((lectura = openHistorial.readLine()) != null) {
+        while((linea = br.readLine()) != null){
 
-                            // Ignorar líneas vacías
-                            if (lectura.trim().isEmpty()) {
-                                continue;
-                            }
+            if(linea.trim().isEmpty()){
+                continue;
+            }
 
-                            // Separar datos por coma
-                            String[] partes = lectura.split(",");
+            String[] partes = linea.split(":");
 
-                            // Verificar formato correcto
-                            if(partes.length < 3){
-                                continue;
-                            }
+            if(partes.length < 2){
+                continue;
+            }
 
-                            // nombre, cedula, clave
-                            int identificacion = Integer.parseInt(partes[1]);
+            int idGuardado =
+                    Integer.parseInt(partes[0].trim());
 
-                            if (tiun == identificacion) {
+            if(idGuardado == tiun){
 
-                                System.out.println("Ya existe el user");
+                br.close();
 
-                                dupli = true;
+                return true;
+            }
+        }
 
-                                break;
-                            }
-                        }
+        br.close();
 
-                        openHistorial.close();
+    } catch(Exception e){
 
-                    } catch(FileNotFoundException ex) {
+        e.printStackTrace(System.out);
+    }
 
-                        ex.printStackTrace(System.out);
-
-                    } catch(IOException ex) {
-
-                        ex.printStackTrace(System.out);
-
-                    } catch(NumberFormatException ex){
-
-                        System.out.println("Error en formato del archivo.");
-                    }
-                }
+    return false;
+}
 
 public static void guardarAdministrador(
         String nombreArchivo,
@@ -169,6 +158,7 @@ public static void guardarAdministrador(
         ex.printStackTrace(System.out);
     }
 }
+
 
 public static boolean cambiarClaveAdministrador(
         String nombreArchivo,
@@ -236,7 +226,7 @@ public static boolean cambiarClaveAdministrador(
         br.close();
         pw.close();
 
-        // REEMPLAZAR ARCHIVO ORIGINAL
+        // 🔥 REEMPLAZAR ARCHIVO ORIGINAL
         if(archivo.delete()){
 
             temporal.renameTo(archivo);
@@ -311,5 +301,35 @@ public static boolean cambiarClaveAdministrador(
     }
 
     return false;
-}
+    }
+
+
+
+    //Agregar bicicleta al txt
+    public static void guardarBicicleta(String archivo, Bike bike){
+
+        try(FileWriter fw = new FileWriter(archivo, true);
+            BufferedWriter bw = new BufferedWriter(fw);
+            PrintWriter out = new PrintWriter(bw)){
+
+            out.println(bike);
+
+        }catch(IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    //Reescribir archivo completo
+    public static void reescribirArchivo(String archivo, ArrayList<Bike> bikes){
+
+        try(PrintWriter writer = new PrintWriter(archivo)){
+
+            for(Bike b : bikes){
+                writer.println(b);
+            }
+
+        }catch(IOException e){
+            e.printStackTrace();
+        }
+    }
 }
