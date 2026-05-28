@@ -75,7 +75,6 @@ public class Main {
 int intentos = 0;
 boolean claveCorrecta = false;
 
-// 🔥 DECLARAR FUERA DEL WHILE
 int claveIngresada = 0;
 
 while(intentos < 3 && !claveCorrecta){
