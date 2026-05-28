@@ -44,7 +44,7 @@ public class Main {
             admi_usu = verifExcepcion(sc, "Si es administrativo ingrese 1 y si es estudiante ingrese 2: ");
             sc.nextLine();
             if(admi_usu == 1){
-
+                opcionMenu = "";
                 //codigo par administradores fijos 
                 verif_u = true;
                 //Nombre del administrador
@@ -382,6 +382,7 @@ if(claveCorrecta){
                 
 
            }else if (admi_usu == 2){
+                opcionMenu = "";
                 boolean existenciaEstudiante = false;
                 estudiante = null;
                 do{
@@ -611,6 +612,7 @@ DocReader.leerArchivo("poo/archivoHistorial/estudianteReal.txt");
             try { 
                 System.out.print(mensaje);
                 num = sc.nextInt();
+                sc.nextInt();
                 v_f = true;
             }catch(Exception e){ 
                 sc.nextLine();
