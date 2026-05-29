@@ -19,17 +19,32 @@ public class Main {
         ArrayList<Comment> listaComentariosAdmin = new ArrayList<>();
         var estaciones = new ArrayList<Station>(); //lista de estaciones
         //Estación 1: Calle 53
-        estaciones.add(new Station("Calle 53",2));
-        //Estación 2: CYT
-        estaciones.add(new Station("CYT", 2));
-        //Estación 3: Uriel
-        estaciones.add(new Station("Uriel", 15));   
-        //Estación 4: Calle 45
-        estaciones.add(new Station("Calle 45", 15));
-        //Estación 5: Calle 26  
-        estaciones.add(new Station("Calle 26", 30));
-        //Estación 6: Calle 30
-        estaciones.add(new Station("Calle 30", 40));
+//Estación 1
+estaciones.add(
+        new Station("Calle 53",15,"poo/archivoHistorial/calle53.txt"));
+
+//Estación 2
+estaciones.add(new Station("CYT",50,"poo/archivoHistorial/cyt.txt"));
+
+//Estación 3
+estaciones.add(
+        new Station("Uriel",15,"poo/archivoHistorial/uriel.txt"));
+
+//Estación 4
+estaciones.add(new Station("Calle 45",15,"poo/archivoHistorial/calle45.txt"));
+
+//Estación 5
+estaciones.add(new Station("Calle 26",30,"poo/archivoHistorial/calle26.txt" ));
+
+//Estación 6
+estaciones.add(new Station( "Calle 30",40,"poo/archivoHistorial/calle30.txt"));
+//CARGAR BICICLETAS DESDE TXT
+for(int i = 0; i < estaciones.size(); i++){
+
+    Archivo.cargarBicicletas(
+            estaciones.get(i)
+    );
+}
         // Agregar los datos fijos de administrador
         var adminsAutorizados = new ArrayList<Administrator>(); //lista de administradores fijos
         adminsAutorizados.add(new Administrator("santiago gonzalez", 1032443188));
