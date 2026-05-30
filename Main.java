@@ -19,32 +19,17 @@ public class Main {
         ArrayList<Comment> listaComentariosAdmin = new ArrayList<>();
         var estaciones = new ArrayList<Station>(); //lista de estaciones
         //Estación 1: Calle 53
-//Estación 1
-estaciones.add(
-        new Station("Calle 53",15,"poo/archivoHistorial/calle53.txt"));
-
-//Estación 2
-estaciones.add(new Station("CYT",50,"poo/archivoHistorial/cyt.txt"));
-
-//Estación 3
-estaciones.add(
-        new Station("Uriel",15,"poo/archivoHistorial/uriel.txt"));
-
-//Estación 4
-estaciones.add(new Station("Calle 45",15,"poo/archivoHistorial/calle45.txt"));
-
-//Estación 5
-estaciones.add(new Station("Calle 26",30,"poo/archivoHistorial/calle26.txt" ));
-
-//Estación 6
-estaciones.add(new Station( "Calle 30",40,"poo/archivoHistorial/calle30.txt"));
-//CARGAR BICICLETAS DESDE TXT
-for(int i = 0; i < estaciones.size(); i++){
-
-    Archivo.cargarBicicletas(
-            estaciones.get(i)
-    );
-}
+        estaciones.add(new Station("Calle 53",2));
+        //Estación 2: CYT
+        estaciones.add(new Station("CYT", 2));
+        //Estación 3: Uriel
+        estaciones.add(new Station("Uriel", 15));   
+        //Estación 4: Calle 45
+        estaciones.add(new Station("Calle 45", 15));
+        //Estación 5: Calle 26  
+        estaciones.add(new Station("Calle 26", 30));
+        //Estación 6: Calle 30
+        estaciones.add(new Station("Calle 30", 40));
         // Agregar los datos fijos de administrador
         var adminsAutorizados = new ArrayList<Administrator>(); //lista de administradores fijos
         adminsAutorizados.add(new Administrator("santiago gonzalez", 1032443188));
@@ -59,7 +44,7 @@ for(int i = 0; i < estaciones.size(); i++){
             admi_usu = verifExcepcion(sc, "Si es administrativo ingrese 1 y si es estudiante ingrese 2: ");
             sc.nextLine();
             if(admi_usu == 1){
-                opcionMenu = "";
+
                 //codigo par administradores fijos 
                 verif_u = true;
                 //Nombre del administrador
@@ -85,95 +70,12 @@ for(int i = 0; i < estaciones.size(); i++){
                     System.out.println("No eres administrador autorizado");
                     opcionMenu = "no";
                 }else{
-                    System.out.println("- - - CAMBIO DE CLAVE ADMINISTRADOR - - -");
-
-int intentos = 0;
-boolean claveCorrecta = false;
-
-int claveIngresada = 0;
-
-while(intentos < 3 && !claveCorrecta){
-
-    System.out.print("Ingrese clave actual: ");
-    claveIngresada = sc.nextInt();
-
-    claveCorrecta =
-            DocReader.verificarClaveAdministrador(
-                    "poo/archivoHistorial/Administradores.txt",
-                    nombre_admi,
-                    cedulaAdmi,
-                    claveIngresada
-            );
-
-    if(!claveCorrecta){
-
-        intentos++;
-
-        System.out.println(
-                "Clave incorrecta. Intento "
-                + intentos +
-                " de 3."
-        );
-    }
-}
-
-if(claveCorrecta){
-
-    System.out.print(
-            "Desea cambiar la contraseña? (si/no): "
-    );
-
-    sc.nextLine();
-
-    String opcion = sc.nextLine().toLowerCase();
-
-    if(opcion.equals("si")){
-
-        System.out.print("Ingrese nueva clave: ");
-
-        int nuevaClave = sc.nextInt();
-
-        boolean cambio =
-                DocReader.cambiarClaveAdministrador(
-                        "poo/archivoHistorial/Administradores.txt",
-                        nombre_admi,
-                        cedulaAdmi,
-                        claveIngresada,
-                        nuevaClave
-                );
-
-        if(cambio){
-
-            System.out.println(
-                    "Clave cambiada correctamente."
-            );
-
-        }else{
-
-            System.out.println(
-                    "No se pudo cambiar la clave."
-            );
-        }
-
-    }else{
-
-        System.out.println(
-                "No se realizó ningún cambio."
-        );
-    }
-
-}else{
-
-    System.out.println(
-            "Acceso bloqueado."
-    );
-}
                     do{
                         //Menu principal
                         System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
                         System.out.println("Menu principal: ");
                         System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
-                        System.out.println("1. Penalizar estudiante");
+                        System.out.println("1. Penalizar y Despenalizar estudiante");
                         System.out.println("2. Agregar cicla");
                         System.out.println("3. Reglas");
                         System.out.println("4. Ver reportes");
@@ -183,32 +85,72 @@ if(claveCorrecta){
                         menu = verifExcepcion(sc, "Ingrese el numero de lo que desea hacer: ");
 
                         if (menu == 1){
+                            int p_dp;
                             System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
-                            System.out.println("Penalizar estudiante");
+                            System.out.println("Penalizar y Despenalizar estudiante");
                             System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
-                            do{
+
+                            
+
+                           /*  do{
                                 if(listaEstudiante.isEmpty()){
                                     System.out.println("No hay estudiantes registrados.");
                                     estadoCorrecto = true;
                                 }else{
+                                    p_dp =verifExcepcion(sc, "Selecciona 1 para activar uso y 2 para desactivar: ");
                                     System.out.print("Ingrese tiun que desea buscar: ");
                                     tiun = sc.nextInt();
                                     sc.nextLine();
-                                    
-                                    estadoCorrecto = adminsAutorizados.get(posicionAdministrador).penalizeStudent(listaEstudiante,tiun);
-                                    
-                                    System.out.print("¿Desea registrar el motivo de la penalización?(si/no): ");
-                                    String opcion = sc.nextLine().toLowerCase();
 
-                                    if(opcion.equals("si")){
-                                        System.out.print("Ingrese el motivo: ");
-                                        String motivo = sc.nextLine();
-                                        adminsAutorizados.get(posicionAdministrador).addMotivoPenalizacion(listaComentariosAdmin,tiun, motivo);
+                                    
 
+                                    if(){
+                                        estadoCorrecto = adminsAutorizados.get(posicionAdministrador).penalizeStudent(listaEstudiante,tiun);
+                                    
+                                        System.out.print("¿Desea registrar el motivo de la penalización?(si/no): ");
+                                        String opcion = sc.nextLine().toLowerCase();
+
+                                        if(opcion.equals("si")){
+                                            System.out.print("Ingrese el motivo: ");
+                                            String motivo = sc.nextLine();
+                                            adminsAutorizados.get(posicionAdministrador).addMotivoPenalizacion(listaComentariosAdmin,tiun, motivo);
+
+                                        }
+
+                                     a_d_bicis =verifExcepcion(sc, "Selecciona 1 para activar uso y 2 para desactivar: ");
+                                if (a_d_bicis == 1){
+                                    System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
+                                    System.out.println("Activar el uso de una bicicleta");
+                                    System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
+                                    System.out.println();
+                                    if (reserva != null) {
+                                    recorreListaEstudiantes(sc, 1, listaEstudiante); 
+                                    } else {
+                                        System.out.println("No hay reservas en este momento.");
                                     }
+
+                                }else if (a_d_bicis == 2){
+                                    System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
+                                    System.out.println("Desactivar el uso de una bicicleta");
+                                    System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
+                                    System.out.println();
+
+                                    if (reserva != null) {
+                                    recorreListaEstudiantes(sc, 2, listaEstudiante); 
+                                    } else {
+                                        System.out.println("No hay reservas en este momento.");
+                                    }
+
+                                }else {
+                                    mensajeError();
                                 }
-                            }while(!estadoCorrecto);
-                            sc.nextLine();
+
+                                    
+                                }
+                            }while(!estadoCorrecto || a_d_bicis > 2 || a_d_bicis < 1 );
+                            
+                            
+                            sc.nextLine();*/
 
                         }else if ( menu == 2){
                         
@@ -396,8 +338,7 @@ if(claveCorrecta){
                 }
                 
 
-           }else if (admi_usu == 2){
-                opcionMenu = "";
+            }else if (admi_usu == 2){
                 boolean existenciaEstudiante = false;
                 estudiante = null;
                 do{
@@ -434,20 +375,16 @@ if(claveCorrecta){
                     
     
                 }while(!verif_u || !verif_tiun || !verif_CC_TI);
-//agregar estudiante a la lista de estudiantes
-DocReader.crearArchivo("poo/archivoHistorial/estudianteReal.txt");
-    boolean existe =DocReader.verificarDuplicados("poo/archivoHistorial/estudianteReal.txt",tiun);
 
-if(!existe){
-    listaEstudiante.add(estudiante);
+                if (!existenciaEstudiante){
+                    //agregar estudiante a la lista de estudiantes
+                    listaEstudiante.add(estudiante);
 
-    DocReader.contenidoArchivo("poo/archivoHistorial/estudianteReal.txt",nombre_st,tiun);
-
-}else{
-    System.out.println("El estudiante ya está registrado.");
-}
-
-DocReader.leerArchivo("poo/archivoHistorial/estudianteReal.txt");
+                    //metodos del historial ***********************************************************************************
+                            DocReader.crearArchivo("poo/archivoHistorial/estudianteReal.txt");
+                            DocReader.verificarDuplicados("poo/archivoHistorial/estudianteReal.txt", tiun);
+                            DocReader.contenidoArchivo("poo/archivoHistorial/estudianteReal.txt", nombre_st, tiun);
+                            DocReader.leerArchivo("poo/archivoHistorial/estudianteReal.txt");
                     //*-********************************************************************************************************
                 }
                 
@@ -627,7 +564,6 @@ DocReader.leerArchivo("poo/archivoHistorial/estudianteReal.txt");
             try { 
                 System.out.print(mensaje);
                 num = sc.nextInt();
-                sc.nextInt();
                 v_f = true;
             }catch(Exception e){ 
                 sc.nextLine();
