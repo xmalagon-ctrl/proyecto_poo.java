@@ -125,26 +125,39 @@ public class Station {
     }
     //**********************************************************************************************************************
     
-    public boolean alertaMaxBicicleta (){
-        if (bicis.size() >= maxBicicletas){
-            return true;
-        }
-        return false;
-    }
+public boolean alertaMaxBicicleta() {
+    return bicicletasAlmacenadas >= maxBicicletas;
+}
+    
+public void infoBicicletasGeneral(){
 
-    public void infoBicicletasGeneral(){  //Muestra todas las ciclas que estan en esa estacion, ya sea que esten disponibles o en mantenimiento
-        System.out.println("Nombre de la estación: " + name_station);
-        for (Bike bike : bicis) {
-            System.out.println("*" + bike.getId() + " Se encuentra: " + bike.getState());
+    System.out.println("Nombre de la estación: " + name_station);
+
+    for(Bike bike : bicis){
+
+        if(bike != null){
+
+            System.out.println(
+                "*" + bike.getId()
+                + " Se encuentra: "
+                + bike.getState()
+            );
         }
     }
+}
 
-    public void infoBicicletasDisponibles(){  //Muestra solo las ciclas que eesta disponibeles en esta estacion
-        System.out.println("Nombre de la estación: " + name_station);
-        bicis.stream()
-             .filter(bike -> bike.getState().equals("disponible"))
-             .forEach(bike -> System.out.println("*" + bike.getId() + " Se encuentra: " + bike.getState()));
+public void infoBicicletasDisponibles() {
+
+    System.out.println("Nombre de la estación: " + name_station);
+
+    for(int i = 0; i < bicicletasAlmacenadas; i++){
+
+        if(bicis[i] != null && bicis[i].getState().equals("disponible")){
+
+            System.out.println("*" + bicis[i].getId() + " Se encuentra: " + bicis[i].getState());
+        }
     }
+}
 /************************************************************************************************************
         public void info(){
 
@@ -159,15 +172,21 @@ public class Station {
     }
 /************************************************************************************************************
       
-    public boolean cambiarEstadoBici(int id, String newState){
-        for(Bike bike : bicis){
-            if(bike.getId() == id){
-                return bike.cambiarEstado(newState);
-            }
+public boolean cambiarEstadoBici(int id, String newState){
+
+    for(Bike bike : bicis){
+
+        if(bike != null && bike.getId() == id){
+
+            return bike.cambiarEstado(newState);
         }
-        System.out.println("No existe bicicleta con ese ID.");
-        return false;
     }
+
+    System.out.println("No existe bicicleta con ese ID.");
+
+    return false;
+}
+
     public static void alertaEstaciones(ArrayList<Station> estaciones){
         boolean first = true;
         for(Station estacion : estaciones){
@@ -183,12 +202,15 @@ public class Station {
         System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
     }
     public boolean existeBicicleta(int id){
-
+    
         for(Bike bike : bicis){
-            if(bike.getId() == id){
+    
+            if(bike != null && bike.getId() == id){
+    
                 return true;
             }
         }
+    
         return false;
     }
 }
