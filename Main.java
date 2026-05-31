@@ -56,9 +56,9 @@ for(int i = 0; i < estaciones.size(); i++){
 
         do {
             admi_usu = verifExcepcion(sc, "Si es administrativo ingrese 1 y si es estudiante ingrese 2: ");
-            sc.nextLine();
-            if(admi_usu == 1){
 
+            if(admi_usu == 1){
+                opcionMenu = "";
                 //codigo par administradores fijos 
                 verif_u = true;
                 //Nombre del administrador
@@ -84,6 +84,94 @@ for(int i = 0; i < estaciones.size(); i++){
                     System.out.println("No eres administrador autorizado");
                     opcionMenu = "no";
                 }else{
+                    //**********************************************************************************************
+                                        System.out.println("- - - CAMBIO DE CLAVE ADMINISTRADOR - - -");
+
+int intentos = 0;
+boolean claveCorrecta = false;
+
+// 🔥 DECLARAR FUERA DEL WHILE
+int claveIngresada = 0;
+
+while(intentos < 3 && !claveCorrecta){
+
+    System.out.print("Ingrese clave actual: ");
+    claveIngresada = sc.nextInt();
+
+    claveCorrecta =
+            DocReader.verificarClaveAdministrador(
+                    "poo/archivoHistorial/Administradores.txt",
+                    nombre_admi,
+                    cedulaAdmi,
+                    claveIngresada
+            );
+
+    if(!claveCorrecta){
+
+        intentos++;
+
+        System.out.println(
+                "Clave incorrecta. Intento "
+                + intentos +
+                " de 3."
+        );
+    }
+}
+
+if(claveCorrecta){
+
+    System.out.print(
+            "Desea cambiar la contraseña? (si/no): "
+    );
+
+    sc.nextLine();
+
+    String opcion = sc.nextLine().toLowerCase();
+
+    if(opcion.equals("si")){
+
+        System.out.print("Ingrese nueva clave: ");
+
+        int nuevaClave = sc.nextInt();
+
+        boolean cambio =
+                DocReader.cambiarClaveAdministrador(
+                        "poo/archivoHistorial/Administradores.txt",
+                        nombre_admi,
+                        cedulaAdmi,
+                        claveIngresada,
+                        nuevaClave
+                );
+
+        if(cambio){
+
+            System.out.println(
+                    "Clave cambiada correctamente."
+            );
+
+        }else{
+
+            System.out.println(
+                    "No se pudo cambiar la clave."
+            );
+        }
+
+    }else{
+
+        System.out.println(
+                "No se realizó ningún cambio."
+        );
+    }
+
+}else{
+
+    System.out.println(
+            "Acceso bloqueado."
+    );
+}
+                    //**********************************************************************************************
+
+                    
                     do{
                         //Menu principal
                         System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
@@ -168,10 +256,18 @@ for(int i = 0; i < estaciones.size(); i++){
 
                         }else if ( menu == 2){
                         
-                             System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
-                            System.out.println("Agregar cicla");
-                            System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
-                              System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
+                        System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
+                        System.out.println("Agregar cicla");
+                        System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
+                        System.out.println("Estaciones: ");
+                        System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
+                        System.out.println("1. Calle 53");
+                        System.out.println("2. CYT");
+                        System.out.println("3. Uriel");
+                        System.out.println("4. Calle 45");
+                        System.out.println("5. Calle 26");
+                        System.out.println("6. Calle 30");
+                        System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
                                         do{
                                 do{
                                     num_estacion = seleccionDeEstacion(sc, "Ingrese la estación deseada: ");
@@ -350,9 +446,10 @@ for(int i = 0; i < estaciones.size(); i++){
                     }while (menu > 6 || menu < 0 || opcionMenu.equals("si"));
 
                 }
-                
+                    
 
             }else if (admi_usu == 2){
+                                opcionMenu = "";
                 boolean existenciaEstudiante = false;
                 estudiante = null;
                 do{
@@ -396,9 +493,27 @@ for(int i = 0; i < estaciones.size(); i++){
 
                     //metodos del historial ***********************************************************************************
                             DocReader.crearArchivo("poo/archivoHistorial/estudianteReal.txt");
-                            DocReader.verificarDuplicados("poo/archivoHistorial/estudianteReal.txt", tiun);
-                            DocReader.contenidoArchivo("poo/archivoHistorial/estudianteReal.txt", nombre_st, tiun);
-                            DocReader.leerArchivo("poo/archivoHistorial/estudianteReal.txt");
+                          boolean existe =  DocReader.verificarDuplicados("poo/archivoHistorial/estudianteReal.txt", tiun);
+                    //*-********************************************************************************************************
+                    if(!existe){
+                        listaEstudiante.add(estudiante);
+                    
+                        DocReader.contenidoArchivo(
+                            "poo/archivoHistorial/estudianteReal.txt",
+                            nombre_st,
+                            tiun
+                        );
+                    
+                    }else{
+                    
+                        System.out.println(
+                            "El estudiante ya está registrado."
+                        );
+                    }
+                    
+                    DocReader.leerArchivo(
+                            "poo/archivoHistorial/estudianteReal.txt"
+                    );
                     //*-********************************************************************************************************
                 }
                 
@@ -430,8 +545,17 @@ for(int i = 0; i < estaciones.size(); i++){
                                     verifEstacion = false;
                                     
                                 }else{
-                                    
+                                    System.out.println("Estaciones: ");
+                                    System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
+                                    System.out.println("1. Calle 53");
+                                    System.out.println("2. CYT");
+                                    System.out.println("3. Uriel");
+                                    System.out.println("4. Calle 45");
+                                    System.out.println("5. Calle 26");
+                                    System.out.println("6. Calle 30");
+                                    System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
                                     num_estacion = seleccionDeEstacion(sc, "Ingresa el numero de la estacion que deseas usar (1 a 6): ");
+                                    
                                     // Se guarda la estación elegida
                                     estacionRecogida = estaciones.get(num_estacion - 1);
 
@@ -442,6 +566,7 @@ for(int i = 0; i < estaciones.size(); i++){
                                         System.out.println("---------------------------------------------\n");
 
                                         do{
+                                                bicicleta = null;
                                             // Ingresa ID  de cicla a usar
                                             id = idCicla(sc, "Ingresa el id de la cicla que deseas usar: ");
                                             for (Bike bike : estacionRecogida.getBicis()) {
