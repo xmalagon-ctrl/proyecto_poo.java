@@ -65,6 +65,10 @@ public class Bike {
         System.out.println("Estado inválido.");
         return false;
     }
+    public void info (){
 
+        System.out.println("id: " + id);
+        System.out.println("estado: " + state);
+    }
 
 }
