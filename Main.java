@@ -186,12 +186,33 @@ if(claveCorrecta){
                         System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
                         menu = verifExcepcion(sc, "Ingrese el numero de lo que desea hacer: ");
 
-                        if (menu == 1){
-                            int p_dp;
+                                               if (menu == 1){
                             System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
-                            System.out.println("Penalizar y Despenalizar estudiante");
+                            System.out.println("Penalizar estudiante");
                             System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
+                            sc.nextLine();
+                            do{
+                                if("estudianteReal.txt".isEmpty()){
+                                    System.out.println("No hay estudiantes registrados.");
+                                    estadoCorrecto = true;
+                                }else{
+                                    System.out.print("Ingrese tiun que desea buscar: ");
+                                    tiun = sc.nextInt();
+                                    sc.nextLine();
+                                    System.out.println("Ingrese el reporte:");
+                                    String mensaje = sc.nextLine();
 
+                                    Comment reporte = new Comment(mensaje, adminsAutorizados.get(posicionAdministrador), tiun);
+
+                                    System.out.print("Ingrese el estado que desea ponerle: ");
+                                    estado = sc.nextLine();
+                                    estadoCorrecto = adminsAutorizados.get(posicionAdministrador).penalizeStudent(listaEstudiante,tiun, estado);
+
+                                }
+                            }while(!estadoCorrecto);
+
+
+                        
                             
 
                            /*  do{
