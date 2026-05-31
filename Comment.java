@@ -1,67 +1,130 @@
+package poo;
+
 import java.time.LocalDateTime;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.File;
 
-public class Comment{
-
-    //Atributos
+public class Comment {
 
     private String mensaje;
     private LocalDateTime fecha;
     private Student autor;
     private Administrator admin;
-    private long tiun; 
-    //Constructor
-            public Comment(String mensaje, Student autor) {
-            this.mensaje = mensaje;
-            this.autor = autor;
-            //Se asigna la fecha de manera automática
-            this.fecha = LocalDateTime.now();
-        }
-    //Constructor para el motivo de penalización manual realizada por el Administrador
-            public Comment(String mensaje, Administrator admin, long tiun ) {
-            this.mensaje = mensaje;
-            this.admin = admin;
-            this.tiun = tiun;
-            //Se asigna la fecha de manera automática
-            this.fecha = LocalDateTime.now();
-        }
+    private long tiun;
 
-    //Get
-    public String getMensaje(){
-        return mensaje;
-    }
-    public LocalDateTime getFecha() {
-        return fecha;
-    }
-        public Student getAutor() {
-        return autor;
-    }
-    public Administrator getAdmin() {
-        return admin; 
-    }
-    public long getTiun(){
-        return tiun;
-    }
+    private static final String ARCHIVO_ESTUDIANTES =
+            "poo/archivoHistorial/comentarios_estudiantes.txt";
 
-    //Set
-    public void setMensaje(){
+    private static final String ARCHIVO_ADMINS =
+            "poo/archivoHistorial/reportes_admin.txt";
+
+    // Comentario de estudiante
+    public Comment(String mensaje, Student autor) {
         this.mensaje = mensaje;
+        this.autor = autor;
+        this.fecha = LocalDateTime.now();
+
+        guardarComentarioEstudiante();
     }
 
-    //Métodos
-    public void verComentario() {
-    if(autor != null){
-        System.out.println("Autor: " + autor.getUserName());
-        System.out.println("TIUN: " + autor.getTiun());
-        System.out.println("Fecha: " + fecha);
-        System.out.println("Mensaje: " + mensaje);
-    }else{
-        System.out.println("Administrador: " + admin.getUserName());
-        System.out.println("Fecha: " + fecha);
-        System.out.println(" - "+ mensaje);
+    // Comentario de administrador
+    public Comment(String mensaje, Administrator admin, long tiun) {
+        this.mensaje = mensaje;
+        this.admin = admin;
+        this.tiun = tiun;
+        this.fecha = LocalDateTime.now();
+
+        guardarComentarioAdmin();
     }
-    System.out.println("- - - -- - - - -- - - -- - - - -- - - - -- - - - -- ");
 
-}
+    private void guardarComentarioEstudiante() {
 
+        try (PrintWriter pw = new PrintWriter(
+                new FileWriter(ARCHIVO_ESTUDIANTES, true))) {
 
+            pw.println("Estudiante: " + autor.getUserName());
+            pw.println("TIUN: " + autor.getTiun());
+            pw.println("Fecha: " + fecha);
+            pw.println("Comentario: " + mensaje);
+            pw.println("--------------------------------");
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void guardarComentarioAdmin() {
+
+        try (PrintWriter pw = new PrintWriter(
+                new FileWriter(ARCHIVO_ADMINS, true))) {
+
+            pw.println("Administrador: " + admin.getUserName());
+            pw.println("TIUN estudiante: " + tiun);
+            pw.println("Fecha: " + fecha);
+            pw.println("Comentario: " + mensaje);
+            pw.println("--------------------------------");
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void mostrarReportes() {
+
+        System.out.println("\n===== COMENTARIOS DE ESTUDIANTES =====\n");
+
+        File archivoEstudiantes = new File(ARCHIVO_ESTUDIANTES);
+
+       // System.out.println("Ruta buscada:");
+       // System.out.println(archivoEstudiantes.getAbsolutePath());
+
+        try (BufferedReader br = new BufferedReader(
+                new FileReader(archivoEstudiantes))) {
+
+            String linea;
+
+            while ((linea = br.readLine()) != null) {
+                System.out.println(linea);
+            }
+
+        } catch (IOException e) {
+
+            System.out.println(
+                    "Error leyendo comentarios de estudiantes:"
+            );
+
+            e.printStackTrace();
+        }
+
+        System.out.println(
+                "\n===== REPORTES DE ADMINISTRADORES =====\n"
+        );
+
+        File archivoAdmins = new File(ARCHIVO_ADMINS);
+
+      //  System.out.println("Ruta buscada:");
+       // System.out.println(archivoAdmins.getAbsolutePath());
+
+        try (BufferedReader br = new BufferedReader(
+                new FileReader(archivoAdmins))) {
+
+            String linea;
+
+            while ((linea = br.readLine()) != null) {
+                System.out.println(linea);
+            }
+
+        } catch (IOException e) {
+
+            System.out.println(
+                    "Error leyendo reportes de administradores:"
+            );
+
+            e.printStackTrace();
+        }
+    }
 }
