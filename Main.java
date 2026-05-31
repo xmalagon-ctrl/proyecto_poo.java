@@ -489,7 +489,7 @@ if(claveCorrecta){
 
                 if (!existenciaEstudiante){
                     //agregar estudiante a la lista de estudiantes
-                    listaEstudiante.add(estudiante);
+                   // listaEstudiante.add(estudiante);
 
                     //metodos del historial ***********************************************************************************
                             DocReader.crearArchivo("poo/archivoHistorial/estudianteReal.txt");
